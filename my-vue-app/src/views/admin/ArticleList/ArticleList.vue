@@ -1,7 +1,7 @@
 <template>
     <div class="AdminArticleList">
         <a-button class="editable-add-btn" style="margin-bottom: 8px" @click="handleAdd">Add</a-button>
-        <a-table bordered :data-source="dataSource" :columns="columns">
+        <a-table bordered :data-source="data" :columns="columns">
             <template #bodyCell="{ column, text, record }">
                 <template v-if="column.dataIndex === 'name'">
                     <div class="editable-cell">
@@ -26,40 +26,13 @@
                 </template>
             </template>
         </a-table>
-        <vditor></vditor>
     </div>
 </template>
 
 <script>
     import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
-    import vditor from "@/components/vditor/vditor.vue";
-    import {defineComponent, reactive, toRefs} from 'vue'
-    const columns = [
-        {
-            name: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
-            title: 'Tags',
-            key: 'tags',
-            dataIndex: 'tags',
-        },
-        {
-            title: 'Action',
-            key: 'action',
-        },
-    ];
+    import {defineComponent, reactive, toRefs,} from 'vue'
+    import {columns} from "@/views/admin/ArticleList/columns";
 
     const data = [
         {
@@ -99,10 +72,14 @@
                 columns,
             }
         },
+        methods:{
+            handleAdd(){
+                this.$router.push('/admin/publish')
+            },
+        },
         components: {
             SmileOutlined,
             DownOutlined,
-            vditor
         },
     })
 </script>

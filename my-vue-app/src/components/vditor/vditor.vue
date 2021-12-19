@@ -1,6 +1,6 @@
 <template>
-    <div id="vditor">
-        {{contentEditor}}
+    <div>
+        <div id="vditor"></div>
     </div>
 </template>
 
@@ -11,28 +11,28 @@
         name: "vditor",
         props: {},
         data(){
-            return{
-                contentEditor:""
-            }
+            return{ contentEditor:{}}
         },
-        setup(){
-            onMounted(()=>{
-                let that = this
-                this.contentEditor = new Vditor('vditor', {
-                    height: 360,
-                    toolbarConfig: {
-                        pin: true,
-                    },
-                    cache: {
-                        enable: false,
-                    },
-                    after: () => {
-                        that.contentEditor.setValue('hello, Vditor + Vue!')
-                    },
-                })
+        mounted() {
+            this.contentEditor = new Vditor('vditor', {
+                height: 360,
+                toolbarConfig: {
+                    pin: true,
+                },
+                cache: {
+                    enable: false,
+                },
+                after: () => {
+                    this.contentEditor.setValue('hello, Vditor + Vue!')
+                },
             })
         },
+        methods:{
+            btn(){
+                console.log(this.contentEditor.getHTML())
 
+            },
+        },
         components: {},
     })
 </script>
