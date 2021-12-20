@@ -3,6 +3,8 @@ import Home from '../views/Home/Home.vue'
 import index from '@/views/admin/index.vue'
 import ArticleList from "@/views/admin/ArticleList/ArticleList.vue";
 import Publish from "@/views/admin/Publish/Publish.vue";
+import Categorize from "@/views/admin/Categorize/Categorize.vue";
+import Tags from "@/views/admin/Tags/Tags.vue";
 const routes = [
   {
     path: '/',
@@ -25,6 +27,16 @@ const routes = [
         name: 'adminPublish',
         component: Publish,
         meta:{admin:true,title:"发布",route:'/admin/publish'},
+      },{
+        path: '/admin/Categorize',
+        name: 'adminCategorize',
+        component: Categorize,
+        meta:{admin:true,title:"分类",route:'/admin/Categorize'},
+      },{
+        path: '/admin/Tags',
+        name: 'Tags',
+        component: Tags,
+        meta:{admin:true,title:"标签",route:'/admin/Tags'},
       }
     ]
   },
