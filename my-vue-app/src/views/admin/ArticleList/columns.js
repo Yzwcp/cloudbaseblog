@@ -23,9 +23,26 @@ export  const columns = [
         title: '是否可见',
         key: 'show',
         dataIndex: 'show',
+    },{
+        title: '创建时间',
+        key: 'createTime',
+        dataIndex: 'createTime',
+    },{
+        title: '更新时间',
+        key: 'updataTime',
+        dataIndex: 'updataTime',
     },
     {
-        title: 'Action',
-        key: 'action',
+        title: '作者',
+        key: 'auth',
+        dataIndex: 'auth',
+    },{
+        title: '喜欢',
+        key: 'like',
+        dataIndex: 'like',
+    },
+    {
+        title: 'operation',
+        key: 'operation',
     },
 ];

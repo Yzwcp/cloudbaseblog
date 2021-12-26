@@ -11,6 +11,11 @@
         name: "Categorize",
         props: {},
         components: {},
+        created() {
+            this.$api.getList('categorize').then(res=>{
+                console.log(res)
+            })
+        }
     })
 </script>
 

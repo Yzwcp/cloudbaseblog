@@ -1,47 +1,40 @@
 <template>
     <div class="AdminArticleList">
+
         <a-button class="editable-add-btn" style="margin-bottom: 8px" @click="handleAdd">Add</a-button>
-        <a-table bordered :data-source="data" :columns="columns">
-            <template #bodyCell="{ column, text, record }">
-                <template v-if="column.dataIndex === 'name'">
-                    <div class="editable-cell">
-                        <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-                            <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
-                            <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
-                        </div>
-                        <div v-else class="editable-cell-text-wrapper">
-                            {{ text || ' ' }}
-                            <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
-                        </div>
-                    </div>
+        <a-table bordered :data-source="data.dataSource" :columns="columns">
+            <template #bodyCell="{ column, text }">
+                <template v-if="column.dataIndex === 'tags'">
+                    <a-tag v-for="tag in text" :key="tag" color="blue">{{ TAGSDICT[tag] }}</a-tag>
                 </template>
-                <template v-else-if="column.dataIndex === 'operation'">
+                <template v-if="column.dataIndex === 'updataTime'">
+                    {{dayjs(new Date(text)).format('YYYY-MM-DD HH:mm:ss')}}
+                </template>
+                <template v-if="column.dataIndex === 'createTime'">
+                    {{dayjs(new Date(text)).format('YYYY-MM-DD HH:mm:ss')}}
+                </template>
+                <template v-if="column.key === 'operation'">
                     <a-popconfirm
-                            v-if="dataSource.length"
-                            title="Sure to delete?"
                             @confirm="onDelete(record.key)"
                     >
                         <a>Delete</a>
                     </a-popconfirm>
+                    <a-divider type="vertical" />
+                    <a @click="handEdit(text)">编辑</a>
                 </template>
             </template>
         </a-table>
+
     </div>
 </template>
 
 <script>
     import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
-    import {defineComponent, reactive, toRefs,} from 'vue'
+    import {defineComponent, reactive, toRefs,getCurrentInstance} from 'vue'
     import {columns} from "@/views/admin/ArticleList/columns";
-
-    const data = [
-        {
-            id: '1',
-            title: 'John Brown',
-            age: 32,
-            tags: ['nice', 'developer'],
-        },
-    ];
+    import {TAGSDICT} from '@/util/map.js'
+    import dayjs from "dayjs";
+    import {useRouter} from 'vue-router'
     export default defineComponent({
         name: "ArticleList",
         data(){
@@ -51,10 +44,32 @@
             }
         },
         props: {},
-        setup(){
+
+        setup(props,{emit}){
+            const {proxy}=getCurrentInstance()
+            const router = useRouter()
+            let data = reactive({
+                dataSource:[]
+            })
+            proxy.$api.getList('article').then(res=>{
+                console.log(res)
+                data.dataSource= ([...res.data])
+            })
+            const handEdit = (text)=>{
+                router.push({
+                    //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+                    name: 'adminPublish',
+                    params: {
+                       text:JSON.stringify(text)
+                    }
+                });
+            }
             return{
                 data,
                 columns,
+                TAGSDICT,
+                dayjs,
+                handEdit
             }
         },
         methods:{

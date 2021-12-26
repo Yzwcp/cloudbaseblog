@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="vditor"></div>
+        <div id="vditor" ></div>
     </div>
 </template>
 
@@ -9,9 +9,20 @@
     import Vditor from "vditor";
     export default defineComponent({
         name: "vditor",
-        props: {},
+        props: {
+            initeValue:{
+                type:String,
+                default:'hello, Vditor  Vue!'
+            }
+        },
         data(){
-            return{ contentEditor:{}}
+            return{ contentEditor:{},body:''}
+        },
+        setup(){
+
+        },
+        computed:{
+
         },
         mounted() {
             this.contentEditor = new Vditor('vditor', {
@@ -23,14 +34,17 @@
                     enable: false,
                 },
                 after: () => {
-                    this.contentEditor.setValue('hello, Vditor + Vue!')
+                    this.contentEditor.setValue(this.initeValue)
                 },
             })
         },
         methods:{
-            btn(){
-                console.log(this.contentEditor.getHTML())
-
+            getHTML(){
+                let value = this.contentEditor.getHTML()
+                this.body =value
+            },
+            setValue(v){
+                this.contentEditor.setValue(v)
             },
         },
         components: {},

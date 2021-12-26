@@ -5,6 +5,7 @@ import ArticleList from "@/views/admin/ArticleList/ArticleList.vue";
 import Publish from "@/views/admin/Publish/Publish.vue";
 import Categorize from "@/views/admin/Categorize/Categorize.vue";
 import Tags from "@/views/admin/Tags/Tags.vue";
+import Login from "@/components/Login/Login.vue";
 const routes = [
   {
     path: '/',
@@ -21,7 +22,7 @@ const routes = [
         path: '/admin/article',
         name: 'adminArticle',
         component: ArticleList,
-        meta:{admin:true,title:"文章",route:'/admin/article'},
+        meta:{admin:true,title:"文章",route:'/admin/article',props:true},
       },{
         path: '/admin/Publish',
         name: 'adminPublish',
@@ -40,7 +41,13 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta:{admin:true,title:'登录',route:'/login'},
 
+  },
 
 
 ]
