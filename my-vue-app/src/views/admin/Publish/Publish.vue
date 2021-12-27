@@ -88,18 +88,23 @@
                 vditorRef.value.getHTML()
                 body.value = vditorRef.value.body
                 const auth = 'yuanzhiwen'
-                let createTime  = new Date()
-                proxy.$api.set('article',{
+                if(initValue){
+                  let data =  await proxy.$api.update('article',{
+                    _id:initValue._id,
+                    body:body.value,
+                    ...value
+                  })
+                  console.log(data)
+                  return
+                }
+                await proxy.$api.set('article',{
                     auth,
                     body:body.value,
-                    createTime,
-                    updataTime:createTime,
                     like:0,
                     look:0,
                     ...value
-                }).then(res=>{
-                    console.log(res)
                 })
+
             }
             return {
                 test,
