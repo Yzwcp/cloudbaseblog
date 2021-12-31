@@ -30,6 +30,9 @@
                 toolbarConfig: {
                     pin: true,
                 },
+                preview:{
+
+                },
                 cache: {
                     enable: false,
                 },

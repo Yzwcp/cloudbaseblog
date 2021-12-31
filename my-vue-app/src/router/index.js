@@ -6,11 +6,31 @@ import Publish from "@/views/admin/Publish/Publish.vue";
 import Categorize from "@/views/admin/Categorize/Categorize.vue";
 import Tags from "@/views/admin/Tags/Tags.vue";
 import Login from "@/components/Login/Login.vue";
+import ArticleDetail from '@/views/Home/childComps/Article/ArticleDetail.vue'
+import HomeArticleList from "@/views/Home/childComps/Article/ArticleList.vue";
+
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    redirect:'/aricleList',
+    children: [
+      {
+        path: '/aricleList',
+        name: 'AricleList',
+
+        component: HomeArticleList,
+        meta:{admin:false,title:'文章详情',route:'/aricleList'},
+      },
+      {
+        path: '/detail',
+        name: 'ArticleDetail',
+        component: ArticleDetail,
+        meta:{admin:false,title:'文章详情',route:'/detail'},
+
+      },
+  ],
   },
   {
     path: '/admin',

@@ -63,6 +63,26 @@ export const API = {
                   message.success('修改失败')
             })
         })
+    },
+    /**
+     * 更新记录
+     * @params dbname 表名
+     * @params params 参数
+     * */
+    getDetail:(dbName,params)=>{
+        return new Promise((resolve, reject)=>{
+            let id = params._id
+            if(params._id) delete params._id
+            db.collection(dbName)
+              .where({_id:id})
+              .get()
+              .then(res=>{
+                  resolve(res)
+              }).catch(err=>{
+                reject(err)
+                message.success('获取失败')
+            })
+        })
     }
 }
 

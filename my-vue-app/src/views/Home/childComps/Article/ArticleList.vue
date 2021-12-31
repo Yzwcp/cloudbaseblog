@@ -1,7 +1,8 @@
 <template>
     <div class="ArticleList">
-        <ArticleItem></ArticleItem>
-        <ArticleItem></ArticleItem>
+        <div v-for="(item,index) in data.dataSource" :key="item._id">
+            <ArticleItem   :detail="item"></ArticleItem>
+        </div>
     </div>
 </template>
 
@@ -11,7 +12,9 @@ import ArticleItem from "@/views/Home/childComps/Article/ArticleItem.vue";
 export default defineComponent({
     name: "ArticleList",
     props: {},
-    components: {ArticleItem},
+    inject:['data'],
+
+  components: {ArticleItem},
 })
 </script>
 

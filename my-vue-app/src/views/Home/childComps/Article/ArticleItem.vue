@@ -1,18 +1,18 @@
 <template>
     <div class="ArticleItem">
         <div class="ArticleItem-container">
-            <div class="container-title">基于Vue的跨移动端和PC端适应 - 掘金</div>
+            <div class="container-title">{{detail.title}}</div>
             <ul  class="container-msg">
                 <span>vue</span>
                 <span>react</span>
-                <span class="container-time">2022-10-01</span>
-                <span class="container-popular">999</span>
+                <span class="container-time">{{detail.createTime}}</span>
+                <span class="container-popular">{{detail.like}}</span>
             </ul>
-            <div class="container-content">
-                Vue CLI 使用了一套基于插件的架构。如果你查阅一个新创建项目的 package.json，就会发现依赖都是以 @vue/cli-plugin- 开头的。插件可以修改 webpack 的内部配置，也可以向 vue-cli-service 注入命令。在项目创建的过程中，绝大部分列出的特性都是通过插件来实现的。
+            <div id="containercontent">
+
             </div>
             <div class="container-comein">
-                <a href="javascript:;">全文阅读</a>
+                <router-link :to="{path:'/detail',query:{id:detail._id}}">访问全文</router-link>
             </div>
         </div>
     </div>
@@ -20,15 +20,33 @@
 
 <script>
 import {defineComponent, reactive, toRefs} from 'vue'
+import {useRouter} from 'vue-router'
 
 export default defineComponent({
     name: "ArticleItem",
-    props: {},
-    components: {},
+    props: ['detail'],
+    setup(){
+      const  router = useRouter()
+      const goDetail = (value)=>{
+        router.push({
+          //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+          name: 'ArticleDetail',
+          params: {
+            text:JSON.stringify(value)
+          }
+        });
+      }
+      return{
+        goDetail
+      }
+    },
+    mounted() {
+    },
+  components: {},
 })
 </script>
 
-<style scoped lang='less'>
+<style  lang='less'>
     .ArticleItem{margin-bottom: 40px}
     .ArticleItem-container{
         box-shadow:  0px 0px 14px -10px @99-base-color ;

@@ -3,7 +3,8 @@
   <div class="banner"></div>
   <div class="article">
    <div class="article-ArticleList">
-    <ArticleList />
+<!--    <ArticleList />-->
+   <router-view/>
    </div>
    <div class="article-Overview">
     <Overview/>
@@ -13,13 +14,26 @@
 </template>
 
 <script>
-import {defineComponent, reactive, toRefs} from 'vue'
+import {defineComponent, reactive, toRefs,getCurrentInstance,provide} from 'vue'
 import ArticleList from "@/views/Home/childComps/Article/ArticleList.vue";
 import Overview from "@/views/Home/childComps/Overview/Overview.vue";
 export default defineComponent({
   name: 'Home',
   props: {
-    
+  },
+  setup(){
+    const {proxy} = getCurrentInstance()
+    let data = reactive({
+      dataSource:[]
+    })
+    proxy.$api.getList('article').then(res=>{
+      console.log(res)
+      data.dataSource= [...res.data]
+    })
+   provide('data', data)
+    return{
+      data
+    }
   },
   components: {
    ArticleList,Overview
