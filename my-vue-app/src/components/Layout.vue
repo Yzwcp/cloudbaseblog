@@ -12,7 +12,8 @@
          </div>
      </div>
      <div v-else>
-         <router-view ></router-view>
+         <keep-alive><router-view ></router-view></keep-alive>
+         
      </div>
 
  </div>

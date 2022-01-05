@@ -3,6 +3,7 @@
         <div v-for="(item,index) in data.dataSource" :key="item._id">
             <ArticleItem   :detail="item"></ArticleItem>
         </div>
+        <!-- <a-pagination v-model="current" :total="data.dataSource.length" show-less-items /> -->
     </div>
 </template>
 
@@ -12,9 +13,14 @@ import ArticleItem from "@/views/Home/childComps/Article/ArticleItem.vue";
 export default defineComponent({
     name: "ArticleList",
     props: {},
+    data(){
+        return{
+            current:1
+        }
+    },
     inject:['data'],
-
-  components: {ArticleItem},
+    mounted(){},
+    components: {ArticleItem},
 })
 </script>
 

@@ -15,15 +15,31 @@ export const API = {
     * 获取表列表
     * @params  dbname 表名
     * */
-    getList:(dbName)=>{
+    getList:(dbName,page={skip:0,limit:999})=>{
         return new Promise((resolve, reject)=>{
             db.collection(dbName)
-            .limit(999)
+            .limit(page.limit)
+            .skip(page.skip)
             .get()
             .then(res=>{
                 resolve(res)
             }).catch(err=>{
                 reject(err)
+            })
+            
+        })
+    },
+    /**
+    * 获取表列表总数
+    * @params  dbname 表名
+    * */
+     getCount:(dbName)=>{
+        return new Promise((resolve, reject)=>{
+            db.collection(dbName)
+            .limit(99)
+            .count()
+            .then(res=>{
+                resolve(res)
             })
         })
     },
@@ -65,7 +81,7 @@ export const API = {
         })
     },
     /**
-     * 更新记录
+     * 获取单条
      * @params dbname 表名
      * @params params 参数
      * */
