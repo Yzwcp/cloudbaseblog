@@ -1,20 +1,27 @@
 <template>
     <div class="ArticleDetail">
+        <!-- <div id="outline"></div> -->
+        
+        <div>
+          <div id="outline"></div>
+        </div>
         <div class="ArticleDetail-container">
             <div class="container-title">{{data.detail.title}}</div>
+
             <ul  class="container-msg">
                 <span>vue</span>
                 <span>react</span>
                 <span class="container-time">{{data.detail.createTime}}</span>
                 <span class="container-popular">{{data.detail.like}}</span>
             </ul>
-            <div id="containercontent"> </div>
+            <div id="preview"> </div>
         </div>
+
     </div>
 </template>
 
 <script>
-  import { defineComponent, reactive, toRefs ,getCurrentInstance,onMounted,nextTick} from 'vue'
+  import { defineComponent, reactive, toRefs ,getCurrentInstance,onMounted,nextTick,ref} from 'vue'
   import Vditor from "vditor";
   import { useRoute } from 'vue-router'
   export default defineComponent({
@@ -33,18 +40,65 @@
       }).then(res=>{
         data.detail ={... res.data[0]}
       })
-
       onMounted(()=>{
-        let id = document.querySelector('#containercontent')
+        let id = document.getElementById('preview')
         setTimeout(()=>{
           Vditor.preview(id,data.detail.body,{
             hljs:{
               style:'dracula'
             },
-            i18n:'zh_CN'
+            i18n:'zh_CN',
+            after(){
+              randerOverView()
+            },
           })
+          
         },500)
       })
+      const randerOverView = ()=>{
+        const outlineElement = document.querySelector('#outline')
+        console.log(outlineElement);
+        let id = document.getElementById('preview')
+        if(!id){
+          return outlineElement.style.display='none'}
+        // contentArticleHeight.value = document.querySelector('.ArticleDetail-container').offsetHeight
+        Vditor.outlineRender(document.getElementById('preview'), outlineElement,)
+        if (outlineElement.innerText.trim() !== '') {
+          outlineElement.style.display = 'block'
+          initOutline()
+        }
+      }
+      const initOutline = () => {
+        const headingElements = []
+        Array.from(document.getElementById('preview').children).forEach((item) => {
+          if (item.tagName.length === 2 && item.tagName !== 'HR' && item.tagName.indexOf('H') === 0) {
+            headingElements.push(item)
+          }
+        })
+        let toc = []
+        window.addEventListener('scroll', () => {
+          const scrollTop = window.scrollY
+          toc = []
+          headingElements.forEach((item) => {
+            toc.push({
+              id: item.id,
+              offsetTop: item.offsetTop,
+            })
+          })
+          const currentElement = document.querySelector('.vditor-outline__item--current')
+          for (let i = 0, iMax = toc.length; i < iMax; i++) {
+            if (scrollTop < toc[i].offsetTop - 30) {
+              if (currentElement) {
+                currentElement.classList.remove('vditor-outline__item--current')
+              }
+              let index = i > 0 ? i - 1 : 0
+              document.querySelector('span[data-target-id="' + toc[index].id + '"]').classList.add('vditor-outline__item--current')
+              // console.log(index);
+              break
+            }
+          }
+        })
+      }
       return{
         data
       }
@@ -58,11 +112,31 @@
 </script>
 
 <style scoped lang='less'>
-    .ArticleDetail{margin-bottom: 40px}
+  
+    .ArticleDetail{
+      margin-bottom: 40px;
+      padding: 50px 0;
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+    }
+    #outline{
+        width: 300px;
+        display: none;
+        position: sticky;
+        right:300px;
+        position: -webkit-sticky;
+        top: 0px;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-row: repeat(2 , 1fr);
+        background: white;
+        box-shadow:  0px 0px 14px -10px @99-base-color ;
+    }
     .ArticleDetail-container{
         box-shadow:  0px 0px 14px -10px @99-base-color ;
         padding: 20px;
         padding-bottom: 50px;
+        background: white;
         border-radius: 10px;
         .container-title{
             font-weight: 600;

@@ -1,5 +1,5 @@
 <template>
- <div>
+ <div class="App">
    <Layout/>
  </div>
 </template>
@@ -18,6 +18,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped >
-  
+<style>
+body{
+  background: #f7f7f7;
+}
+
 </style>

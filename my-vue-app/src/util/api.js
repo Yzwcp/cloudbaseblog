@@ -1,6 +1,8 @@
 import cloudbase from '@cloudbase/js-sdk'
 import tcb from '@cloudbase/js-sdk'
 import Antd,{message} from 'ant-design-vue';
+import {client} from '@/util/aliOss.js'
+
 export const appCloud = cloudbase.init({
     env: "hello-cloudbase-0g324hb6bc21523c"
 });
@@ -49,15 +51,16 @@ export const API = {
      * @params params 参数
      * */
     set:(dbName,params)=>{
-            return new Promise((resolve, reject)=>{
-                db.collection(dbName)
-                .add({...params,updataTime:time,createTime:time})
-                .then(res=>{
-                    resolve(res)
-                }).catch(err=>{
-                    reject(err)
-                })
+        return new Promise((resolve, reject)=>{
+            db.collection(dbName)
+            .add({...params,updataTime:time,createTime:time})
+            .then(res=>{
+                resolve(res)
+                message.success('添加成功，自动跳转详情页')
+            }).catch(err=>{
+                reject(err)
             })
+        })
     },
     /**
      * 更新记录
@@ -99,7 +102,27 @@ export const API = {
                 message.success('获取失败')
             })
         })
-    }
+    },
+    /**
+     * 上传文件
+     * 
+     * 
+     */
+    uploadOss(file,fileName){
+        return new Promise((resolve,reject)=>{
+            const time = new Date().getTime()
+            client.put('blog/'+time+"_"+fileName,file,{
+                headers: {'Content-Type': 'image/jpg' }
+            })
+            .then(function (r1) {
+                if(r1.res.status==200) resolve(r1.url)
+            })
+            .catch(function (err) {
+                console.log('error: %j', err);
+                reject(err)
+            }); 
+        })
+    },
 }
 
 

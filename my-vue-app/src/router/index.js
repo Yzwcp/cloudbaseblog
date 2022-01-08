@@ -14,24 +14,17 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    redirect:'/aricleList',
-    children: [
-      {
-        path: '/aricleList',
-        name: 'AricleList',
-
-        component: HomeArticleList,
-        meta:{admin:false,title:'文章详情',route:'/aricleList'},
-      },
-      {
-        path: '/detail',
-        name: 'ArticleDetail',
-        component: ArticleDetail,
-        meta:{admin:false,title:'文章详情',route:'/detail'},
-
-      },
-  ],
+    meta:{admin:false,title:'文章详情',route:'/detail'},
+    
   },
+  {
+    path: '/detail',
+    name: 'ArticleDetail',
+    component: ArticleDetail,
+    meta:{admin:false,title:'文章详情',route:'/detail'},
+
+  },
+ 
   {
     path: '/admin',
     name: 'admin',

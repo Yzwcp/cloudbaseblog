@@ -1,5 +1,5 @@
 <template>
-    <div class="Overview">
+    <div class="Overview" :style="{'height':contentArticleHeight+'px'}">
 <!--        个人展示-->
         <div class="profile">
             Umep
@@ -38,24 +38,94 @@
             <div>运行天数</div>
             <div>555</div>
         </div>
+        <div id="outline"></div>
+
     </div>
 </template>
 
 <script>
-    import {defineComponent, reactive, toRefs} from 'vue'
+  import {defineComponent, reactive, toRefs,onMounted,watch,ref} from 'vue'
+  import {onBeforeRouteUpdate} from 'vue-router'
+  import Vditor from "vditor";
 
     export default defineComponent({
         name: "Overview",
         props: {},
         components: {},
+        setup(){
+          let contentArticleHeight = ref("100")
+          const randerOverView = ()=>{
+              setTimeout(()=>{
+                const outlineElement = document.getElementById('outline')
+                let id = document.getElementById('preview')
+                if(!id){
+                  contentArticleHeight.value = 100
+                  return outlineElement.style.display='none'}
+                contentArticleHeight.value = document.querySelector('.ArticleDetail-container').offsetHeight
+                Vditor.outlineRender(document.getElementById('preview'), outlineElement,)
+                if (outlineElement.innerText.trim() !== '') {
+                  outlineElement.style.display = 'block'
+                  initOutline()
+                }
+          
+              },800)
+          }
+          const initOutline = () => {
+                const headingElements = []
+                Array.from(document.getElementById('preview').children).forEach((item) => {
+                  if (item.tagName.length === 2 && item.tagName !== 'HR' && item.tagName.indexOf('H') === 0) {
+                    headingElements.push(item)
+                  }
+                })
+                let toc = []
+                window.addEventListener('scroll', () => {
+                  const scrollTop = window.scrollY
+                  toc = []
+                  headingElements.forEach((item) => {
+                    toc.push({
+                      id: item.id,
+                      offsetTop: item.offsetTop,
+                    })
+                  })
+
+                  const currentElement = document.querySelector('.vditor-outline__item--current')
+                  for (let i = 0, iMax = toc.length; i < iMax; i++) {
+                    if (scrollTop < toc[i].offsetTop - 30) {
+                      if (currentElement) {
+                        currentElement.classList.remove('vditor-outline__item--current')
+                      }
+                      let index = i > 0 ? i - 1 : 0
+                      // document.querySelector('span[data-target-id="' + toc[index].id + '"]').classList.add('vditor-outline__item--current')
+                      // console.log(index);
+                      break
+                    }
+                  }
+                })
+          }
+          onMounted(()=>{
+            
+
+            
+            randerOverView()
+          })
+          onBeforeRouteUpdate((to=>{
+              randerOverView()
+          }))
+          return{
+            contentArticleHeight
+          }
+        },
     })
 </script>
 
 <style scoped lang='less'>
+  
     .Overview{
         margin-left: 30px;
         padding: 50px 0;
+        overflow: visible;
         >div{
+            background: white;
             margin-bottom: 20px;
             padding:20px;
             border-radius: 10px;
@@ -86,6 +156,16 @@
             display: grid;
             grid-template-columns: 2fr 1fr;
             grid-template-row: repeat(2 , 1fr);
+        }
+        #outline{
+          display: none;
+          position: sticky;
+          position: -webkit-sticky;
+          top: 0px;
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          grid-template-row: repeat(2 , 1fr);
+          background: white;
         }
     }
 

@@ -1,11 +1,11 @@
 <template>
- <div>
+ <div class="home">
   <div class="banner"></div>
   <div class="article">
    <div class="article-ArticleList">
-<!--    <ArticleList />-->
-    <router-view/>
-    <a-pagination v-show="$route.path='/aricleList'" v-model="current" :total="total" :pageSize='limit' @change='changeCurrent'/>
+   <ArticleList />
+    <!-- <router-view/> -->
+    <a-pagination v-model="current" :total="total" :pageSize='limit' @change='changeCurrent'/>
     <a-upload :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"  >
       <a-button>
         <upload-outlined></upload-outlined>
@@ -21,6 +21,7 @@
     >
       {{ uploading ? 'Uploading' : 'Start Upload' }}
     </a-button>
+    <img :src="data.url" alt="">
    </div>
    <div class="article-Overview">
     <Overview/>
@@ -34,23 +35,13 @@ import {defineComponent, reactive, toRefs,getCurrentInstance,provide,ref} from '
 import { UploadOutlined } from '@ant-design/icons-vue';
 import ArticleList from "@/views/Home/childComps/Article/ArticleList.vue";
 import Overview from "@/views/Home/childComps/Overview/Overview.vue";
+import {client} from '@/util/aliOss.js'
 export default defineComponent({
   name: 'Home',
   props: {
   },
   setup(){
-    const fileList = ref([]);
-    const uploading = ref(false);
-    const client = new OSS({
-        region: 'oss-cn-hangzhou',
-        accessKeyId: 'LTAI5tSVCiLtVtAuTdPRGwXj',
-        accessKeySecret: 'Sdd1UvlKU7O1fURsvFVhKgIy837J5r',
-        bucket: 'blog-umep',
-        path: 'blog/'
-    })
-    client.list().then(res=>{
-      console.log(res);
-    })
+
     const handleRemove = file => {
       const index = fileList.value.indexOf(file);
       const newFileList = fileList.value.slice();
@@ -62,43 +53,17 @@ export default defineComponent({
       return false;
     };
 
-    const handleUpload = () => {
-      const formData = new FormData();
-      fileList.value.forEach(file => {
-        formData.append('files[]', file);
-      });
-      console.log(formData);
-      console.log(fileList.value);
-      uploading.value = true; // You can use any AJAX library you like
-      client.put('blog/blog_'+fileList.value[0].name, fileList.value[0]).then(function (r1) {
-        console.log('put success: %j', r1);
-        return client.get('object');
-      }).then(function (r2) {
-        console.log('get success: %j', r2);
-      }).catch(function (err) {
-        console.log('error: %j', err);
-      });  
-      // request('https://www.mocky.io/v2/5cc8019d300000980a055e76', {
-      //   method: 'post',
-      //   data: formData,
-      // }).then(() => {
-      //   fileList.value = [];
-      //   uploading.value = false;
-      //   message.success('upload successfully.');
-      // }).catch(() => {
-      //   uploading.value = false;
-      //   message.error('upload failed.');
-      // });
-    };
+    
 
 
 
-
+    const fileList = ref([]);
+    const uploading = ref(false);
     const {proxy} = getCurrentInstance()
     const limit = 3
     let current = ref(1)
     let total = ref(0)
-    let data = reactive({dataSource:[]})
+    let data = reactive({dataSource:[],url:''})
     //获取总数
     proxy.$api.getCount('article').then(res=>{
       total.value = res.total
@@ -114,6 +79,13 @@ export default defineComponent({
       current.value =v
       initList()
     }
+    const handleUpload = () => {
+      uploading.value = true; // You can use any AJAX library you like
+      proxy.$api.uploadOss(fileList.value[0],fileList.value[0].name).then(res=>{
+        console.log(res);
+        data.url = res
+      })
+    };
     initList()
     provide('data', data)
     return{
@@ -137,10 +109,13 @@ export default defineComponent({
 </script>
 
 <style scoped >
+  .home{
+  }
   .article{
     display: flex;
   }
  .article-ArticleList{
+   
    flex: 2;
  }
  .article-Overview{

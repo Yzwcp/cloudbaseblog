@@ -47,11 +47,12 @@ export default defineComponent({
 </script>
 
 <style  lang='less'>
-    .ArticleItem{margin-bottom: 40px}
+    .ArticleItem{margin-bottom: 40px;}
     .ArticleItem-container{
         box-shadow:  0px 0px 14px -10px @99-base-color ;
         padding: 20px;
         padding-bottom: 50px;
+        background: white;
         border-radius: 10px;
         .container-title{
             font-weight: 600;

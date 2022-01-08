@@ -12,7 +12,7 @@
          </div>
      </div>
      <div v-else>
-         <keep-alive><router-view ></router-view></keep-alive>
+        <router-view ></router-view>
          
      </div>
 
@@ -37,11 +37,12 @@ export default defineComponent({
 </script>
 
 <style scoped lang='less'>
-
+    .Layout{
+    }
     .header{
     }
     .container{
-      width: 1200px;
+      width: 1400px;
       margin: 0 auto;
     }
 
