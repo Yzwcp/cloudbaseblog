@@ -5,7 +5,7 @@
         <a-table bordered :data-source="data.dataSource" :columns="columns"  :pagination='pagination' @change='changeCurrent' :loading="loading">
             <template #bodyCell="{ column, text }">
                 <template v-if="column.dataIndex === 'tags'">
-                    <a-tag v-for="tag in text" :key="tag" color="blue">{{ TAGSDICT[tag] }}</a-tag>
+                    <a-tag v-for="tag in text" :key="tag" color="blue">{{ tag }}</a-tag>
                 </template>
                 <template v-if="column.dataIndex === 'updataTime'">
                     {{dayjs(new Date(text)).format('YYYY-MM-DD HH:mm:ss')}}
@@ -32,7 +32,7 @@
 import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
 import {defineComponent, reactive, toRefs,getCurrentInstance,ref,computed} from 'vue'
 import {columns} from "@/views/admin/ArticleList/columns";
-import {TAGSDICT} from '@/util/map.js'
+// import {TAGSDICT} from '@/util/map.js'
 import dayjs from "dayjs";
 import {useRouter} from 'vue-router'
 export default defineComponent({
@@ -91,7 +91,6 @@ export default defineComponent({
         return{
             data,
             columns,
-            TAGSDICT,
             dayjs,
             changeCurrent,
             handEdit,

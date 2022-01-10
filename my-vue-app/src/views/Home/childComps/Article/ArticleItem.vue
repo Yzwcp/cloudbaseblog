@@ -1,20 +1,32 @@
 <template>
     <div class="ArticleItem">
+        <router-link :to="{path:'/detail',query:{id:detail._id}}">
         <div class="ArticleItem-container">
             <div class="container-title">{{detail.title}}</div>
-            <ul  class="container-msg">
-                <span>vue</span>
-                <span>react</span>
-                <span class="container-time">{{detail.createTime}}</span>
-                <span class="container-popular">{{detail.like}}</span>
+            <ul >
+                <div class="pub-article-extra">
+                  <FolderOutlined />
+                  <span>分类:</span>
+                  <div>{{detail.categorize}}</div>
+                </div>
+                <div class="pub-article-extra">
+                  <tag-outlined />
+                  <span>标签:</span>
+                  <div><a-tag color="blue" v-for="item in detail.tags " :key="item">{{item}}</a-tag></div>
+                </div>
+                <div class="pub-article-extra">
+                  <FieldTimeOutlined/>
+                  <span>创建时间:</span>
+                  <div>{{((new Date(detail.createTime)).toLocaleString())}}</div>
+                </div>
+                
             </ul>
             <div id="containercontent">
 
             </div>
-            <div class="container-comein">
-                <router-link :to="{path:'/detail',query:{id:detail._id}}">访问全文</router-link>
-            </div>
+     
         </div>
+        </router-link>
     </div>
 </template>
 

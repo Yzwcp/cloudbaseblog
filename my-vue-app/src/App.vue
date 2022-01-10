@@ -18,9 +18,6 @@ export default defineComponent({
 })
 </script>
 
-<style>
-body{
-  background: #f7f7f7;
-}
+<style >
 
 </style>

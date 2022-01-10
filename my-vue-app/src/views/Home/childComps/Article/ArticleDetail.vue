@@ -1,34 +1,49 @@
 <template>
     <div class="ArticleDetail">
         <!-- <div id="outline"></div> -->
-        
-        <div>
-          <div id="outline"></div>
-        </div>
         <div class="ArticleDetail-container">
             <div class="container-title">{{data.detail.title}}</div>
-
             <ul  class="container-msg">
-                <span>vue</span>
-                <span>react</span>
-                <span class="container-time">{{data.detail.createTime}}</span>
-                <span class="container-popular">{{data.detail.like}}</span>
+                <div class="pub-article-extra">
+                  <FolderOutlined />
+                  <span>分类:</span>
+                  <div>{{data.detail.categorize}}</div>
+                </div>
+                <div class="pub-article-extra">
+                  <tag-outlined />
+                  <span>标签:</span>
+                  <div><a-tag color="blue" v-for="item in data.detail.tags " :key="item">{{item}}</a-tag></div>
+                </div>
+                <div class="pub-article-extra">
+                  <FieldTimeOutlined/>
+                  <span>创建时间:</span>
+                  <div>{{((new Date(data.detail.createTime)).toLocaleString())}}</div>
+                </div>
+                <div class="pub-article-extra">
+                  <like-outlined />
+                  <span>like:</span>
+                  <div>{{data.detail.like}}</div>
+                </div>
             </ul>
             <div id="preview"> </div>
         </div>
-
+        <div>
+          <div id="outline"></div>
+        </div>
     </div>
 </template>
 
 <script>
   import { defineComponent, reactive, toRefs ,getCurrentInstance,onMounted,nextTick,ref} from 'vue'
+  import {HomeOutlined,TagOutlined,FolderOutlined,FieldTimeOutlined,LikeOutlined} from '@ant-design/icons-vue';
   import Vditor from "vditor";
   import { useRoute } from 'vue-router'
   export default defineComponent({
     name: 'ArticleDetail',
     props: {},
-    components: {},
-    setup(){
+    components: {HomeOutlined,TagOutlined,FolderOutlined,FieldTimeOutlined,LikeOutlined},
+    setup(props){
+      console.log(props);
       const route = useRoute()
       const {proxy} = getCurrentInstance()
       let data = reactive({
@@ -62,8 +77,8 @@
         if(!id){
           return outlineElement.style.display='none'}
         // contentArticleHeight.value = document.querySelector('.ArticleDetail-container').offsetHeight
-        Vditor.outlineRender(document.getElementById('preview'), outlineElement,)
-        if (outlineElement.innerText.trim() !== '') {
+        Vditor.outlineRender(id, outlineElement,)
+          if (outlineElement.innerText.trim() !== '') {
           outlineElement.style.display = 'block'
           initOutline()
         }
@@ -76,6 +91,7 @@
           }
         })
         let toc = []
+        console.log(headingElements);
         window.addEventListener('scroll', () => {
           const scrollTop = window.scrollY
           toc = []
@@ -92,6 +108,8 @@
                 currentElement.classList.remove('vditor-outline__item--current')
               }
               let index = i > 0 ? i - 1 : 0
+              console.log(toc);
+              // console.log(document.querySelector('span[data-target-id="' + toc[index].id + '"]'));
               document.querySelector('span[data-target-id="' + toc[index].id + '"]').classList.add('vditor-outline__item--current')
               // console.log(index);
               break
@@ -117,7 +135,7 @@
       margin-bottom: 40px;
       padding: 50px 0;
       display: grid;
-      grid-template-columns: 1fr 3fr;
+      grid-template-columns: 3fr  1fr;
     }
     #outline{
         width: 300px;
@@ -130,6 +148,7 @@
         grid-template-columns: 2fr 1fr;
         grid-template-row: repeat(2 , 1fr);
         background: white;
+        margin-left: 100px;
         box-shadow:  0px 0px 14px -10px @99-base-color ;
     }
     .ArticleDetail-container{
@@ -143,13 +162,7 @@
             font-size: 28px;
             color: @88-base-color;
         }
-        .container-msg{
-            span{
-                margin-right: 20px;
-                color: black;
-                opacity: .5;
-            }
-        }
+        
         .container-content{
             text-indent: 2em;
             text-align: left;

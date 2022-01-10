@@ -42,8 +42,8 @@
             })
         },
         methods:{
-            getHTML(){
-                let value = this.contentEditor.getHTML()
+            getValue(){
+                let value = this.contentEditor.getValue()
                 this.body =value
             },
             setValue(v){

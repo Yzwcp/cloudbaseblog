@@ -32,6 +32,7 @@
                                 placeholder="Please select"
                                 style="width: 200px"
                                 v-model:value="formState.tags"
+                                @change='tagsChange'
                         ></a-select>
                     </a-form-item>
                     </a-col>
@@ -96,9 +97,12 @@
                 send(value)
                 // formRef.value.resetFields()
             }
+            const tagsChange = (v,o)=>{
+                console.log(v);
+            }
             const send =async value=>{
                 //获取markdown数据
-                vditorRef.value.getHTML()
+                vditorRef.value.getValue()
                 body.value = vditorRef.value.body
                 const auth = 'yuanzhiwen'
                 if(initValue){
@@ -110,15 +114,17 @@
                   console.log(data)
                   return
                 }
-                const {data} = await proxy.$api.set('article',{
+                const data = await proxy.$api.set('article',{
                     auth,
                     body:body.value,
                     like:0,
                     look:0,
                     ...value
                 })
-                router.push('/detail',{
-                    params:{id:data._id}
+                console.log(data);
+                router.push({
+                    path:'/detail',
+                    query:{id:data.id}
                 })
                 
             }
@@ -129,7 +135,7 @@
                 onFinish,
                 vditorRef,
                 formRef,
-                body
+                body,tagsChange
             };
         },
         components: {vditor},

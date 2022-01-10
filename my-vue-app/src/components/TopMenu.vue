@@ -1,7 +1,7 @@
 <template>
   <div class="TopMenu">
     <ul>
-      <li><a javascript=";">首页</a></li>
+      <li><router-link :to="'/index/'+($route.params.id || 1)">首页</router-link></li>
       <li><a javascript=";">分类</a></li>
       <li><a javascript=";">Tags</a></li>
       <li><a javascript=";">图库</a></li>
@@ -30,18 +30,22 @@ export default defineComponent({
     height: 60px;
     width: 100%;
     background-color:@99-base-color;
-    padding: 0 200px;
+    box-shadow:  0px 0px 14px -10px @99-base-color ;
+    padding: 20px 150px;
+    padding-bottom: 50px;
+    background: white;
+    border-radius: 10px;
     ul{
-      display:grid;
-      grid-template-columns: 1fr .5fr .5fr .5fr .5fr 1fr;
-      grid-template-rows: 60px;
+      display: flex;
+      justify-content: flex-end;
       li{
         text-align: center;
         line-height: 60px;
-        font-size: 20px;
+        font-size: 16px;
+        width: 100px;
         list-style: none;
         a{
-          color: white;
+          color: black;
         }
       }
     }

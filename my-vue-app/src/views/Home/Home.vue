@@ -5,7 +5,7 @@
    <div class="article-ArticleList">
    <ArticleList />
     <!-- <router-view/> -->
-    <a-pagination v-model="current" :total="total" :pageSize='limit' @change='changeCurrent'/>
+    <a-pagination  v-model:current="current" :total="total" :pageSize='limit' @change='changeCurrent'/>
     <a-upload :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"  >
       <a-button>
         <upload-outlined></upload-outlined>
@@ -33,15 +33,17 @@
 <script>
 import {defineComponent, reactive, toRefs,getCurrentInstance,provide,ref} from 'vue'
 import { UploadOutlined } from '@ant-design/icons-vue';
+import {useRouter} from 'vue-router'
 import ArticleList from "@/views/Home/childComps/Article/ArticleList.vue";
 import Overview from "@/views/Home/childComps/Overview/Overview.vue";
 import {client} from '@/util/aliOss.js'
 export default defineComponent({
   name: 'Home',
   props: {
+    id:[Number],
   },
-  setup(){
-
+  setup(props){
+    console.log(props);
     const handleRemove = file => {
       const index = fileList.value.indexOf(file);
       const newFileList = fileList.value.slice();
@@ -60,10 +62,11 @@ export default defineComponent({
     const fileList = ref([]);
     const uploading = ref(false);
     const {proxy} = getCurrentInstance()
+    const router = useRouter()
     const limit = 3
-    let current = ref(1)
+    let current = ref(+props.id)
     let total = ref(0)
-    let data = reactive({dataSource:[],url:''})
+    let data = reactive({dataSource:[],url:'',tagList:[]})
     //获取总数
     proxy.$api.getCount('article').then(res=>{
       total.value = res.total
@@ -74,9 +77,14 @@ export default defineComponent({
           data.dataSource= [...res.data]
       })
     }
+    proxy.$api.getList('classify').then(res=>{  
+      console.log(res)
+      data.tagList= [...res.data[0].tags]
+    })
     const changeCurrent = (v) =>{
       console.log( v);
       current.value =v
+      router.push({name:'Home',params:{id:v}})
       initList()
     }
     const handleUpload = () => {

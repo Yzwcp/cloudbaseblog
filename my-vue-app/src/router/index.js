@@ -12,17 +12,21 @@ import HomeArticleList from "@/views/Home/childComps/Article/ArticleList.vue";
 const routes = [
   {
     path: '/',
+    redirect:'/index/1'
+    
+  },
+  {
+    path: '/index/:id',
     name: 'Home',
     component: Home,
-    meta:{admin:false,title:'文章详情',route:'/detail'},
-    
+    meta:{admin:false,title:'首页',route:'/index'},
+    props:true
   },
   {
     path: '/detail',
     name: 'ArticleDetail',
     component: ArticleDetail,
     meta:{admin:false,title:'文章详情',route:'/detail'},
-
   },
  
   {

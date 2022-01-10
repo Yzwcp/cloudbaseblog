@@ -589,7 +589,7 @@ delayed-stream@~1.0.0:
 
 diff-match-patch@^1.0.5:
   version "1.0.5"
-  resolved "https://registry.npm.taobao.org/diff-match-patch/download/diff-match-patch-1.0.5.tgz#abb584d5f10cd1196dfc55aa03701592ae3f7b37"
+  resolved "https://registry.nlark.com/diff-match-patch/download/diff-match-patch-1.0.5.tgz?cache=0&sync_timestamp=1624608107067&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdiff-match-patch%2Fdownload%2Fdiff-match-patch-1.0.5.tgz#abb584d5f10cd1196dfc55aa03701592ae3f7b37"
   integrity sha1-q7WE1fEM0Rlt/FWqA3AVkq4/ezc=
 
 dom-align@^1.12.1:
