@@ -5,7 +5,18 @@
              <TopMenu/>
          </div>
          <div class="container">
-             <keep-alive><router-view ></router-view></keep-alive>
+            <router-view v-slot="{ Component }">
+                <keep-alive>
+                    <component
+                        :is="Component"
+                        v-if="$route.meta.keepAlive"
+                        :key="$route.path"
+                    >
+                    </component>
+                </keep-alive>
+            </router-view>
+            
+             <router-view v-if="!$route.meta.keepAlive"/>
          </div>
          <div class="footer">
              <!--        <Footer/>-->

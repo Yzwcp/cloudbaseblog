@@ -2,26 +2,30 @@
  <div class="home">
   <div class="banner"></div>
   <div class="article">
+   <div class="article-filter">
+     <ArticleFilter/>
+   </div>
    <div class="article-ArticleList">
-   <ArticleList />
-    <!-- <router-view/> -->
-    <a-pagination  v-model:current="current" :total="total" :pageSize='limit' @change='changeCurrent'/>
-    <a-upload :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"  >
-      <a-button>
-        <upload-outlined></upload-outlined>
-        Select File
+      <ArticleList />
+    
+      <!-- <router-view/> -->
+      <a-pagination  v-model:current="page.current" :total="articleTotal" :pageSize='page.limit' @change='changeCurrent'/>
+      <a-upload :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"  >
+        <a-button>
+          <upload-outlined></upload-outlined>
+          Select File
+        </a-button>
+      </a-upload>
+      <a-button
+        type="primary"
+        :disabled="fileList.length === 0"
+        :loading="uploading"
+        style="margin-top: 16px"
+        @click="handleUpload"
+      >
+        {{ uploading ? 'Uploading' : 'Start Upload' }}
       </a-button>
-    </a-upload>
-    <a-button
-      type="primary"
-      :disabled="fileList.length === 0"
-      :loading="uploading"
-      style="margin-top: 16px"
-      @click="handleUpload"
-    >
-      {{ uploading ? 'Uploading' : 'Start Upload' }}
-    </a-button>
-    <img :src="data.url" alt="">
+      <img :src="allData.url" alt="">
    </div>
    <div class="article-Overview">
     <Overview/>
@@ -31,19 +35,24 @@
 </template>
 
 <script>
+import ArticleList from "@/views/Home/childComps/Article/ArticleList.vue";
+import Overview from "@/views/Home/childComps/Overview/Overview.vue";
+import ArticleFilter from './childComps/ArticleFilter/ArticleFilter.vue'
 import {defineComponent, reactive, toRefs,getCurrentInstance,provide,ref} from 'vue'
 import { UploadOutlined } from '@ant-design/icons-vue';
 import {useRouter} from 'vue-router'
-import ArticleList from "@/views/Home/childComps/Article/ArticleList.vue";
-import Overview from "@/views/Home/childComps/Overview/Overview.vue";
-import {client} from '@/util/aliOss.js'
+
+
+import {HOME_LIMIT as limit} from '@/util/config.js'
 export default defineComponent({
   name: 'Home',
   props: {
     id:[Number],
   },
+  components: {
+   ArticleList,Overview,UploadOutlined,ArticleFilter
+  },
   setup(props){
-    console.log(props);
     const handleRemove = file => {
       const index = fileList.value.indexOf(file);
       const newFileList = fileList.value.slice();
@@ -54,55 +63,73 @@ export default defineComponent({
       fileList.value = [...fileList.value, file];
       return false;
     };
-
-    
-
-
-
+    const {proxy} = getCurrentInstance()
     const fileList = ref([]);
     const uploading = ref(false);
-    const {proxy} = getCurrentInstance()
     const router = useRouter()
-    const limit = 3
-    let current = ref(+props.id)
-    let total = ref(0)
-    let data = reactive({dataSource:[],url:'',tagList:[]})
-    //获取总数
+    let articleTotal = ref(0)
+    let page = reactive({
+      current:+props.id,
+      skip:0,
+      limit:limit
+    })
+    //  {skip:(current.value-1)*limit,limit}
+    let allData = reactive({dataSource:[],url:'',tagList:[],categorizeTotal:0,categorizeList:[],categorizeItem:{}})
+    //获取分类
+    proxy.$api.getList('categorize').then(res=>{
+      allData.categorizeTotal = res.data.length
+      allData.categorizeList = res.data
+    })
+    //获取文章总数
     proxy.$api.getCount('article').then(res=>{
-      total.value = res.total
+      console.log(res);
+      articleTotal.value = res.total
     })
-    const initList = ()=>{
-      proxy.$api.getList('article',{skip:(current.value-1)*limit,limit}).then(res=>{  
-          console.log(res)
-          data.dataSource= [...res.data]
-      })
-    }
+    //获取tags
     proxy.$api.getList('classify').then(res=>{  
-      console.log(res)
-      data.tagList= [...res.data[0].tags]
+
+      allData.tagList= [...res.data[0].tags]
     })
-    const changeCurrent = (v) =>{
-      console.log( v);
-      current.value =v
-      router.push({name:'Home',params:{id:v}})
-      initList()
+    //文章列表
+    const initArticleList = async ()=>{
+      let where = allData.categorizeItem.title
+      if(Object.keys(allData.categorizeItem).length==0) where = {}
+      const {data} = await proxy.$api.getList('article',
+      page,
+      where
+      )
+      allData.dataSource = data 
     }
+    //页码修改
+    const changeCurrent = (v) =>{
+      page.current =v
+      page.skip =  (v-1)*limit
+      router.push({name:'Home',params:{id:v}})
+      initArticleList()
+    }
+    //上传文件
     const handleUpload = () => {
       uploading.value = true; // You can use any AJAX library you like
       proxy.$api.uploadOss(fileList.value[0],fileList.value[0].name).then(res=>{
         console.log(res);
-        data.url = res
+        allData.url = res
       })
     };
-    initList()
-    provide('data', data)
-    return{
-      data,
-      current,
-      limit,
-      total,
-      changeCurrent,
+    const categorizeHandle = (item) =>{
+      
+      allData.categorizeItem = {...item}
+      initArticleList()
+    }
 
+  
+    initArticleList()
+    provide('allData', allData)
+    provide('categorizeHandle', categorizeHandle)
+    return{
+      allData,
+      changeCurrent,
+      articleTotal,
+      page,
       fileList,
       uploading,
       handleRemove,
@@ -110,17 +137,23 @@ export default defineComponent({
       handleUpload,
     }
   },
-  components: {
-   ArticleList,Overview,UploadOutlined  
+  created(){
   },
+  activated(){
+  },
+
 })
 </script>
 
 <style scoped >
   .home{
+    padding: 50px 0;
   }
   .article{
     display: flex;
+  }
+  .article-filter{
+    flex: .5;
   }
  .article-ArticleList{
    

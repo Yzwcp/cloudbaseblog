@@ -19,7 +19,7 @@ const routes = [
     path: '/index/:id',
     name: 'Home',
     component: Home,
-    meta:{admin:false,title:'首页',route:'/index'},
+    meta:{admin:false,title:'首页',route:'/index',keepAlive:true},
     props:true
   },
   {

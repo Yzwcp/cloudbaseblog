@@ -10,6 +10,7 @@
     "@ant-design/icons-vue": "^6.0.1",
     "@cloudbase/js-sdk": "^1.7.1",
     "ant-design-vue": "^3.0.0-alpha.14",
+    "axios": "^0.24.0",
     "dayjs": "^1.10.7",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",

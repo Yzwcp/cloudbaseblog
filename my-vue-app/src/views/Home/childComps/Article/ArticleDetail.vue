@@ -43,7 +43,6 @@
     props: {},
     components: {HomeOutlined,TagOutlined,FolderOutlined,FieldTimeOutlined,LikeOutlined},
     setup(props){
-      console.log(props);
       const route = useRoute()
       const {proxy} = getCurrentInstance()
       let data = reactive({
@@ -91,7 +90,6 @@
           }
         })
         let toc = []
-        console.log(headingElements);
         window.addEventListener('scroll', () => {
           const scrollTop = window.scrollY
           toc = []
@@ -108,7 +106,6 @@
                 currentElement.classList.remove('vditor-outline__item--current')
               }
               let index = i > 0 ? i - 1 : 0
-              console.log(toc);
               // console.log(document.querySelector('span[data-target-id="' + toc[index].id + '"]'));
               document.querySelector('span[data-target-id="' + toc[index].id + '"]').classList.add('vditor-outline__item--current')
               // console.log(index);

@@ -1,9 +1,9 @@
 <template>
     <div class="ArticleList">
-        <div v-for="(item,index) in data.dataSource" :key="item._id">
+        <div v-for="(item,index) in allData.dataSource" :key="item._id">
             <ArticleItem   :detail="item"></ArticleItem>
         </div>
-        <!-- <a-pagination v-model="current" :total="data.dataSource.length" show-less-items /> -->
+        <!-- <a-pagination v-model="current" :total="allData.dataSource.length" show-less-items /> -->
     </div>
 </template>
 
@@ -13,12 +13,12 @@ import ArticleItem from "@/views/Home/childComps/Article/ArticleItem.vue";
 export default defineComponent({
     name: "ArticleList",
     props: {},
-    data(){
+    allData(){
         return{
             current:1
         }
     },
-    inject:['data'],
+    inject:['allData'],
     mounted(){},
     components: {ArticleItem},
 })
@@ -26,6 +26,6 @@ export default defineComponent({
 
 <style scoped lang='less'>
     .ArticleList{
-        padding: 50px 20px;
+        padding: 0px 20px;
     }
 </style>

@@ -13,14 +13,13 @@
             <div>文章</div>
             <div>分类</div>
             <div>标签</div>
-            <div>1</div>
+            <div>{{allData.total || 0}}</div>
             <div>2</div>
-            <div>3</div>
+            <div>{{allData.tagList.length || 0}}</div>
         </div>
 <!--        标签-->
         <div class="tags">
-            <span :style="{color:tools.get16Color()}" v-for="item in data.tagList " :key="item">{{item.value}}</span>
-
+            <span :style="{color:tools.get16Color()}" v-for="item in allData.tagList " :key="item">{{item.value}}</span>
         </div>
 <!--        社交-->
         <div class="social">
@@ -50,7 +49,7 @@
         computed:{
             tools:()=>tools
         },
-        inject:['data'],
+        inject:['allData'],
 
         setup(){
           
@@ -64,7 +63,6 @@
   
     .Overview{
         margin-left: 30px;
-        padding: 50px 0;
         overflow: visible;
         >div{
             background: white;

@@ -2,7 +2,7 @@ import cloudbase from '@cloudbase/js-sdk'
 import tcb from '@cloudbase/js-sdk'
 import Antd,{message} from 'ant-design-vue';
 import {client} from '@/util/aliOss.js'
-
+import {request} from './request'
 export const appCloud = cloudbase.init({
     env: "hello-cloudbase-0g324hb6bc21523c"
 });
@@ -11,25 +11,15 @@ export const auth = appCloud.auth({persistence: "local"})
 
 let time  = new Date()
 export const API = {
+    appCloud,
     db,
     auth,
     /**
     * 获取表列表
     * @params  dbname 表名
     * */
-    getList:(dbName,page={skip:0,limit:999})=>{
-        return new Promise((resolve, reject)=>{
-            db.collection(dbName)
-            .limit(page.limit)
-            .skip(page.skip)
-            .get()
-            .then(res=>{
-                resolve(res)
-            }).catch(err=>{
-                reject(err)
-            })
-            
-        })
+    getList:(dbName,page={skip:0,limit:999},where={})=> {
+      return  request({url:'/getCollection',data:{dbName,page,where}})
     },
     /**
     * 获取表列表总数
