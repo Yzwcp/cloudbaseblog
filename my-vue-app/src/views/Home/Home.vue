@@ -9,7 +9,7 @@
       <ArticleList />
     
       <!-- <router-view/> -->
-      <a-pagination  v-model:current="page.current" :total="articleTotal" :pageSize='page.limit' @change='changeCurrent'/>
+      <a-pagination  v-model:current="page.current" :total="allData.articleTotal" :pageSize='page.limit' @change='changeCurrent'/>
       <a-upload :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"  >
         <a-button>
           <upload-outlined></upload-outlined>
@@ -43,7 +43,7 @@ import { UploadOutlined } from '@ant-design/icons-vue';
 import {useRouter} from 'vue-router'
 
 
-import {HOME_LIMIT as limit} from '@/util/config.js'
+import {HOME_LIMIT} from '@/util/config.js'
 export default defineComponent({
   name: 'Home',
   props: {
@@ -66,15 +66,15 @@ export default defineComponent({
     const {proxy} = getCurrentInstance()
     const fileList = ref([]);
     const uploading = ref(false);
-    const router = useRouter()
-    let articleTotal = ref(0)
-    let page = reactive({
-      current:+props.id,
-      skip:0,
-      limit:limit
+    // 页面分页
+    const page = reactive({
+      current:1,
+      limit:HOME_LIMIT,
+      skip:0
     })
+    console.log("init")
     //  {skip:(current.value-1)*limit,limit}
-    let allData = reactive({dataSource:[],url:'',tagList:[],categorizeTotal:0,categorizeList:[],categorizeItem:{}})
+    let allData = reactive({dataSource:[],url:'',tagList:[],articleTotal:0,categorizeTotal:0,categorizeList:[],categorizeItem:{}})
     //获取分类
     proxy.$api.getList('categorize').then(res=>{
       allData.categorizeTotal = res.data.length
@@ -82,8 +82,7 @@ export default defineComponent({
     })
     //获取文章总数
     proxy.$api.getCount('article').then(res=>{
-      console.log(res);
-      articleTotal.value = res.total
+      allData.articleTotal = res.total
     })
     //获取tags
     proxy.$api.getList('classify').then(res=>{  
@@ -91,21 +90,25 @@ export default defineComponent({
       allData.tagList= [...res.data[0].tags]
     })
     //文章列表
-    const initArticleList = async ()=>{
-      let where = allData.categorizeItem.title
-      if(Object.keys(allData.categorizeItem).length==0) where = {}
-      const {data} = await proxy.$api.getList('article',
-      page,
-      where
+    const initData = async ()=>{
+      allData.dataSource =await filterData()
+    }
+    //添加筛选参数r
+    const filterData = async(where={})=>{
+      if(Object.keys(where).length==0) where = {}
+      const {data} = await proxy.$api.getList(
+          'article',
+          {...page},
+          {...where}
       )
-      allData.dataSource = data 
+      return data
     }
     //页码修改
     const changeCurrent = (v) =>{
-      page.current =v
-      page.skip =  (v-1)*limit
-      router.push({name:'Home',params:{id:v}})
-      initArticleList()
+      page.current = v
+      page.skip  =  (v-1)*(page.limit>10?1:page.limit)
+      // router.push({name:'Home',params:{id:v}})
+      initData()
     }
     //上传文件
     const handleUpload = () => {
@@ -115,20 +118,23 @@ export default defineComponent({
         allData.url = res
       })
     };
-    const categorizeHandle = (item) =>{
-      
+    //筛选分类
+    const categorizeHandle =async (item) =>{
+      page.current = 1
+      page.skip = 0
+      //筛选分类的时候全部展示不要分页了
+      page.limit = Object.keys(item).length==0?HOME_LIMIT:999
       allData.categorizeItem = {...item}
-      initArticleList()
+      allData.dataSource =await filterData({categorize:item.title})
     }
 
   
-    initArticleList()
+    initData()
     provide('allData', allData)
     provide('categorizeHandle', categorizeHandle)
     return{
       allData,
       changeCurrent,
-      articleTotal,
       page,
       fileList,
       uploading,

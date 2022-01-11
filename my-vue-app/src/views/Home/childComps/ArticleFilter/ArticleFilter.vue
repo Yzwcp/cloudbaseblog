@@ -6,7 +6,7 @@
   </div>
   <div>
     <li @click="categorizeHandle({})">显示全部文章</li>
-    <li v-for="item in allData.categorizeList" :key="item._id"   @click="categorizeHandle(item)">{{ item.title }}</li>
+    <li v-for="item in allData.categorizeList" :key="item._id" :class="item._id==allData.categorizeItem._id?'active':''" @click="categorizeHandle(item)">{{ item.title }}</li>
   </div>
 
  </div>
@@ -39,6 +39,6 @@ export default defineComponent({
     background: #f8f8f8;
   }
   .active{
-    background:@99-base-color;
+    border-left:1px solid @99-base-color;
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="TopMenu">
     <ul>
-      <li><router-link :to="'/index/'+($route.params.id || 1)">首页</router-link></li>
+      <li><router-link :to="'/index/'">首页</router-link></li>
       <li><a javascript=";">分类</a></li>
       <li><a javascript=";">Tags</a></li>
       <li><a javascript=";">图库</a></li>

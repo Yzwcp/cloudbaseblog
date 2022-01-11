@@ -13,7 +13,7 @@
             <div>文章</div>
             <div>分类</div>
             <div>标签</div>
-            <div>{{allData.total || 0}}</div>
+            <div>{{allData.articleTotal || 0}}</div>
             <div>2</div>
             <div>{{allData.tagList.length || 0}}</div>
         </div>
