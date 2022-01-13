@@ -12,7 +12,6 @@
         props: {
             initeValue:{
                 type:String,
-                default:'hello, Vditor  Vue!'
             }
         },
         data(){
@@ -26,7 +25,7 @@
         },
         mounted() {
             this.contentEditor = new Vditor('vditor', {
-                height: 360,
+                height: 630,
                 toolbarConfig: {
                     pin: true,
                 },

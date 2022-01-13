@@ -42,11 +42,14 @@ export const API = {
      * */
     set:(dbName,params)=>{
         return new Promise((resolve, reject)=>{
+						let id = params._id
+            if(params._id) delete params._id
             db.collection(dbName)
-            .add({...params,updataTime:time,createTime:time})
+						.doc(id)
+            .set({...params,updataTime:time,createTime:time})
             .then(res=>{
                 resolve(res)
-                message.success('添加成功，自动跳转详情页')
+                message.success('添加成功!')
             }).catch(err=>{
                 reject(err)
             })

@@ -36,7 +36,7 @@ import {columns} from "@/views/admin/ArticleList/columns";
 import dayjs from "dayjs";
 import {useRouter} from 'vue-router'
 export default defineComponent({
-    name: "ArticleList",
+    name: "AdminArticleList",
     data(){
         return{
             clazz:'ArticleList',
@@ -103,6 +103,9 @@ export default defineComponent({
             this.$router.push('/admin/publish')
         },
     },
+      activated(){
+          console.log('ac');
+  },
     components: {
         SmileOutlined,
         DownOutlined,

@@ -19,7 +19,7 @@
         </div>
 <!--        标签-->
         <div class="tags">
-            <span :style="{color:tools.get16Color()}" v-for="item in allData.tagList " :key="item">{{item.value}}</span>
+            <span @click="tagsHandle(item.value)" :style="{color:tools.get16Color()}" v-for="item in allData.tagList " :key="item">{{item.value}}</span>
         </div>
 <!--        社交-->
         <div class="social">
@@ -49,7 +49,7 @@
         computed:{
             tools:()=>tools
         },
-        inject:['allData'],
+        inject:['allData','tagsHandle'],
 
         setup(){
           
@@ -84,6 +84,8 @@
            span{
                 margin: 6px;
                 font-size: 18px;
+                cursor:pointer
+
            }
         }
         .website{

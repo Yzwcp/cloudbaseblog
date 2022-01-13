@@ -19,7 +19,7 @@ const routes = [
     path: '/index',
     name: 'Home',
     component: Home,
-    meta:{admin:false,title:'首页',route:'/index',keepAlive:true},
+    meta:{admin:false,title:'首页',route:'/index',keepAlive:false},
     props:true
   },
   {
@@ -33,28 +33,28 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: index,
-    meta:{admin:true,title:'首页',route:'/admin'},
+    meta:{admin:true,title:'首页',route:'/admin',keepAlive:false},
     children:[
       {
         path: '/admin/article',
         name: 'adminArticle',
         component: ArticleList,
-        meta:{admin:true,title:"文章",route:'/admin/article',props:true},
+        meta:{admin:true,title:"文章",route:'/admin/article',props:true,keepAlive:false},
       },{
         path: '/admin/Publish',
         name: 'adminPublish',
         component: Publish,
-        meta:{admin:true,title:"发布",route:'/admin/publish'},
+        meta:{admin:true,title:"发布",route:'/admin/publish',keepAlive:false},
       },{
         path: '/admin/Categorize',
         name: 'adminCategorize',
         component: Categorize,
-        meta:{admin:true,title:"分类",route:'/admin/Categorize'},
+        meta:{admin:true,title:"分类",route:'/admin/Categorize',keepAlive:false},
       },{
         path: '/admin/Tags',
         name: 'Tags',
         component: Tags,
-        meta:{admin:true,title:"标签",route:'/admin/Tags'},
+        meta:{admin:true,title:"标签",route:'/admin/Tags',keepAlive:false},
       }
     ]
   },

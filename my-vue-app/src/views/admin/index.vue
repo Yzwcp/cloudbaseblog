@@ -16,10 +16,10 @@
                         <desktop-outlined />
                         <router-link  to="/admin/Categorize"><span>分类</span></router-link>
                     </a-menu-item>
-                    <a-menu-item key="/admin/Tags">
+                    <!-- <a-menu-item key="/admin/Tags">
                         <desktop-outlined />
                         <router-link  to="/admin/Tags"><span>标签</span></router-link>
-                    </a-menu-item>
+                    </a-menu-item> -->
                 </a-menu>
             </a-layout-sider>
             <a-layout>

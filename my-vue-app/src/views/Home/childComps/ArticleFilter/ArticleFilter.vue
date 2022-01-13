@@ -39,6 +39,6 @@ export default defineComponent({
     background: #f8f8f8;
   }
   .active{
-    border-left:1px solid @99-base-color;
+    border-left:2px solid @99-base-color;
   }
 </style>

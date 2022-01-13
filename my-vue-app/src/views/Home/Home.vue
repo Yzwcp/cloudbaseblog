@@ -124,14 +124,33 @@ export default defineComponent({
       page.skip = 0
       //筛选分类的时候全部展示不要分页了
       page.limit = Object.keys(item).length==0?HOME_LIMIT:999
+      if(JSON.stringify(allData.categorizeItem) == JSON.stringify(item)) return
       allData.categorizeItem = {...item}
       allData.dataSource =await filterData({categorize:item.title})
     }
-
-  
+    //筛选标签
+    const tagsHandle = async(item)=>{
+      const _ = proxy.$api.db.command;
+      proxy.$api.db.collection("article")
+      .where({
+        // gt 方法用于指定一个 "大于" 条件，此处 _.gt(30) 是一个 "大于 30" 的条件
+        tags: _.in([item])
+      })
+      .get()
+      .then((res) => {
+        page.current = 1
+        page.skip = 0
+        //筛选分类的时候全部展示不要分页了
+        page.limit = 999
+        allData.dataSource = res.data
+        console.log(res);
+      });
+    }
+    
     initData()
     provide('allData', allData)
     provide('categorizeHandle', categorizeHandle)
+    provide('tagsHandle', tagsHandle)
     return{
       allData,
       changeCurrent,
@@ -162,7 +181,7 @@ export default defineComponent({
     flex: .5;
   }
  .article-ArticleList{
-   
+   padding: 20px;
    flex: 2;
  }
  .article-Overview{

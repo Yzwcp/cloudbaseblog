@@ -2,8 +2,6 @@
   <div class="TopMenu">
     <ul>
       <li><router-link :to="'/index/'">首页</router-link></li>
-      <li><a javascript=";">分类</a></li>
-      <li><a javascript=";">Tags</a></li>
       <li><a javascript=";">图库</a></li>
       <li><a javascript=";">音乐</a></li>
       <li><a javascript=";">登录</a></li>

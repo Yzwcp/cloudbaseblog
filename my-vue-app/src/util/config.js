@@ -3,7 +3,7 @@ export default {
   ErrorMesage:{
     400:'网络请求失败！'
   },
-  
+  Authentication:false//是否开启全域访问鉴权
 }
 // 首页每页数量
 export const HOME_LIMIT = 5

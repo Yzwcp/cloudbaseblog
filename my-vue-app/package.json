@@ -9,18 +9,20 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "@cloudbase/js-sdk": "^1.7.1",
-    "ant-design-vue": "^3.0.0-alpha.14",
+    "ant-design-vue": "2.2.8",
     "axios": "^0.24.0",
     "dayjs": "^1.10.7",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
     "vditor": "3.8.4",
     "vue": "^3.2.25",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-0",
+    "vuex": "^4.0.0-0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.0.0",
     "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
     "vite": "^2.7.2"
   }
 }
