@@ -25,7 +25,7 @@
       >
         {{ uploading ? 'Uploading' : 'Start Upload' }}
       </a-button>
-      <img :src="allData.url" alt="">
+      {{allData.url}}
    </div>
    <div class="article-Overview">
     <Overview/>

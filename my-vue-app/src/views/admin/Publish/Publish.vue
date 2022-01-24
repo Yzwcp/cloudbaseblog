@@ -44,16 +44,21 @@
                                 @click="showHandle"
                             >
                                 <plus-outlined />
-                                Add item
+                                添加标签
                             </div>
                         </template>
                         </a-select>
                     </a-form-item>
                     </a-col>
                     <a-col :span='8'>
-                    <a-form-item name="title" label="标题" :rules="[{ required: true, message: 'Please input your title!' }]">
+                    <a-form-item name="title" label="标题" :rules="[{ required: true, message: '添加标题' }]">
                         <a-input style="width: 200px" v-model:value="formState.title" placeholder="Basic usage" />
                     </a-form-item>
+                    </a-col>
+										<a-col :span='8'>
+											<a-form-item name="describe" label="描述" :rules="[{ required: true, message: '添加描述' }]">
+													<a-input style="width: 200px" v-model:value="formState.describe" placeholder="Basic describe" />
+											</a-form-item>
                     </a-col>
                     <a-col :span='2'>
                         <a-form-item >
@@ -66,7 +71,7 @@
             <div class="vditor">
                 <vditor ref="vditorRef" :inite-value="body"></vditor>
             </div>
-				<CommonModal  @ok='okHandle' dbName='classify' @showHandle :oldData='data.tagsObj.list' :id='data.tagsObj._id'  />
+				<CommonModal  ref='modalRef' @ok='okHandle' dbName='classify'  :oldData='data.tagsObj.list' :id='data.tagsObj._id'  />	
 
         </a-card>
 <!--        <a-button type="primary" @click="test">tex</a-button>-->
@@ -88,6 +93,7 @@ export default defineComponent({
 			let vditorRef = ref(null);
 			let body = ref("");
 			let formRef =ref(null)
+			let modalRef =ref(null)
 			let data = reactive({
 					categorizeList:[],
 					tagsObj:{
@@ -100,7 +106,7 @@ export default defineComponent({
 			let initValue = route.params.text || ""
 			initValue && (initValue=JSON.parse(initValue))
 			const formState = reactive({
-					...initValue
+					...initValue	
 			});
 			if(initValue) body.value=initValue.body
 			//获取文章分类列表
@@ -136,7 +142,7 @@ export default defineComponent({
 							console.log(data)
 							return
 					}
-					const data = await proxy.$api.set('article',{
+					const data = await proxy.$api.add('article',{
 							auth,
 							body:body.value,
 							like:0,
@@ -153,6 +159,10 @@ export default defineComponent({
 			const okHandle = (v) =>{
 				getClassify()
 			}
+			const showHandle = () =>{
+				console.log(modalRef);
+				modalRef.value.showHandle()
+			}
 			getClassify()
 			return {
 					test,
@@ -160,9 +170,8 @@ export default defineComponent({
 					formState,
 					onFinish,
 					vditorRef,
-					showHandle,
-					formRef,
-					body,tagsChange,okHandle
+					formRef,modalRef,
+					body,tagsChange,okHandle,showHandle
 			};
     },
     components: {

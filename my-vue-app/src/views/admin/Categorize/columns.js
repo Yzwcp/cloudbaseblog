@@ -21,5 +21,6 @@ export  const columns = [
     {
         title: 'operation',
         key: 'operation',
+        dataIndex: 'operation',
     },
 ];

@@ -2,27 +2,10 @@
     <div class="AdminArticleList">
 
         <a-button class="editable-add-btn" style="margin-bottom: 8px" @click="handleAdd">Add</a-button>
-        <a-table bordered :data-source="data.dataSource" :columns="columns"  :pagination='pagination' @change='changeCurrent' :loading="loading">
-            <template #bodyCell="{ column, text }">
-                <template v-if="column.dataIndex === 'tags'">
-                    <a-tag v-for="tag in text" :key="tag" color="blue">{{ tag }}</a-tag>
-                </template>
-                <template v-if="column.dataIndex === 'updataTime'">
-                    {{dayjs(new Date(text)).format('YYYY-MM-DD HH:mm:ss')}}
-                </template>
-                <template v-if="column.dataIndex === 'createTime'">
-                    {{dayjs(new Date(text)).format('YYYY-MM-DD HH:mm:ss')}}
-                </template>
-                <template v-if="column.key === 'operation'">
-                    <a-popconfirm
-                            @confirm="onDelete(record.key)"
-                    >
-                        <a>Delete</a>
-                    </a-popconfirm>
-                    <a-divider type="vertical" />
-                    <a @click="handEdit(text)">编辑</a>
-                </template>
-            </template>
+        <a-table rowKey="_id" bordered :data-source="data.dataSource" :columns="columns"  :pagination='pagination' @change='changeCurrent' :loading="loading">
+					<template #operation="{ record }">
+						<a @click="handEdit(record)">编辑</a>
+        	</template>
         </a-table>
 
     </div>

@@ -28,7 +28,7 @@ export default defineComponent({
     height: 60px;
     width: 100%;
     background-color:@99-base-color;
-    box-shadow:  0px 0px 14px -10px @99-base-color ;
+    box-shadow:@box-shadow ;
     padding: 20px 150px;
     padding-bottom: 50px;
     background: white;

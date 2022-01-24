@@ -22,7 +22,7 @@
                 
             </ul>
             <div id="containercontent">
-
+							{{detail.describe}}
             </div>
      
         </div>
@@ -61,7 +61,7 @@ export default defineComponent({
 <style  lang='less'>
     .ArticleItem{margin-bottom: 40px;}
     .ArticleItem-container{
-        box-shadow:  0px 0px 14px -10px @99-base-color ;
+        box-shadow:@box-shadow ;
         padding: 20px;
         padding-bottom: 50px;
         background: white;
@@ -88,6 +88,9 @@ export default defineComponent({
             -webkit-box-orient: vertical;
             margin-bottom: 20px;
         }
+				#containercontent{
+					color: black;
+				}
         .container-comein{
             float: right;
             font-size: 18px;

@@ -3,23 +3,21 @@
 
         <a-button class="editable-add-btn" style="margin-bottom: 8px" @click="showModal">Add</a-button>
         <a-table bordered :data-source="data.dataSource" :columns="columns">
-            <template #bodyCell="{ column, text }">
                 <template v-if="column.dataIndex === 'updataTime'">
                     {{dayjs(new Date(text)).format('YYYY-MM-DD HH:mm:ss')}}
                 </template>
                 <template v-if="column.dataIndex === 'createTime'">
                     {{dayjs(new Date(text)).format('YYYY-MM-DD HH:mm:ss')}}
                 </template>
-                <template v-if="column.key === 'operation'">
-                    <a-popconfirm
+								<template #operation="{ record , text }">
+										<a-popconfirm
                             @confirm="onDelete(record.key)"
                     >
                         <a>Delete</a>
                     </a-popconfirm>
                     <a-divider type="vertical" />
                     <a @click="showModal(text)">编辑</a>
-                </template>
-            </template>
+								</template>
         </a-table>
         <a-modal v-model:visible="visible" title="修改分类" @ok="handleOk">
             <a-input v-model:value="data.record.title"></a-input>
@@ -64,7 +62,7 @@
       };
       const handleOk = async ()=>{
         if(!data.record._id){
-          await proxy.$api.set('categorize',{
+          await proxy.$api.add('categorize',{
             title: data.record.title,
           })
         }else{

@@ -24,21 +24,26 @@
 
         },
         mounted() {
-            this.contentEditor = new Vditor('vditor', {
-                height: 630,
-                toolbarConfig: {
-                    pin: true,
-                },
-                preview:{
-
-                },
-                cache: {
-                    enable: false,
-                },
-                after: () => {
-                    this.contentEditor.setValue(this.initeValue)
-                },
-            })
+					this.contentEditor = new Vditor('vditor', {
+						height: 630,
+						toolbarConfig: {
+								pin: true,
+						},
+						preview:{
+							hljs:{
+								lineNumber:true
+							}
+						},
+						comment:{
+							enable:true
+						},
+						cache: {
+								enable: false,
+						},
+						after: () => {
+								this.contentEditor.setValue(this.initeValue)
+						},
+					})
         },
         methods:{
             getValue(){

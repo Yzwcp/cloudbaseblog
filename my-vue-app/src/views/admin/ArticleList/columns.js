@@ -1,7 +1,7 @@
 export  const columns = [
     {
         name: 'id',
-        dataIndex: 'id',
+        dataIndex: '_id',
         key: 'id',
     },
     {
@@ -44,5 +44,7 @@ export  const columns = [
     {
         title: 'operation',
         key: 'operation',
+        dataIndex: 'operation',
+				slots: { customRender: 'operation' },
     },
 ];

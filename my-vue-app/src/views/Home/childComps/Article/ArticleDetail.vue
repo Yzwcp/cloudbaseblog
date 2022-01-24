@@ -26,27 +26,34 @@
                 </div>
             </ul>
             <div id="preview"> </div>
+
         </div>
         <div>
           <div id="outline"></div>
         </div>
+        
+						<ArticleComment :article='data.detail._id' :comment='data.comment'/>
+				
     </div>
 </template>
 
 <script>
-  import { defineComponent, reactive, toRefs ,getCurrentInstance,onMounted,nextTick,ref} from 'vue'
+  import { defineComponent, reactive, toRefs ,getCurrentInstance,onMounted,nextTick,ref, provide,h} from 'vue'
   import {HomeOutlined,TagOutlined,FolderOutlined,FieldTimeOutlined,LikeOutlined} from '@ant-design/icons-vue';
+	import ArticleComment from './ArticleComment.vue'
   import Vditor from "vditor";
+	import config from '@/util/config.js'
   import { useRoute } from 'vue-router'
   export default defineComponent({
     name: 'ArticleDetail',
     props: {},
-    components: {HomeOutlined,TagOutlined,FolderOutlined,FieldTimeOutlined,LikeOutlined},
+    components: {HomeOutlined,TagOutlined,FolderOutlined,FieldTimeOutlined,LikeOutlined,ArticleComment},
     setup(props){
       const route = useRoute()
       const {proxy} = getCurrentInstance()
       let data = reactive({
-        detail:{}
+        detail:{},
+				comment:[]
       })
       let detailId = route.query.id
       proxy.$api.getDetail('article',{
@@ -59,7 +66,8 @@
         setTimeout(()=>{
           Vditor.preview(id,data.detail.body,{
             hljs:{
-              style:'dracula'
+              style:'dracula',
+							lineNumber:true,
             },
             i18n:'zh_CN',
             after(){
@@ -82,6 +90,9 @@
           initOutline()
         }
       }
+			/**
+			 *渲染大纲
+			 */
       const initOutline = () => {
         const headingElements = []
         Array.from(document.getElementById('preview').children).forEach((item) => {
@@ -114,6 +125,61 @@
           }
         })
       }
+			/**
+				发送评论
+			 */
+			const sendComment = async (params) => {
+				let heroInfo = localStorage.getItem('heroInfo')
+				if(heroInfo==null){
+					const {sanGuo} = config
+					const list1 = ['曹魏','蜀汉','孙吴']
+					const list2 = ['文臣','武将']
+					const t = Object.keys(sanGuo).length -1 
+					const campRandom = Math.round(Math.random()*t) // 阵营 随机数
+					const camp = list1[campRandom]//阵营
+					const wenAndwuRandom = Math.round(Math.random()*1) // 文 or 武 随机数
+					const wenAndwu = list2[wenAndwuRandom] //文武
+					const list3 = sanGuo[camp][wenAndwu] //随机出来的英雄列表
+					const t3 = Math.round(Math.random()*(list3.length-1))//随机一个英雄
+					const hero = list3[t3]
+					heroInfo = [camp,wenAndwu,hero]
+					localStorage.setItem('heroInfo',[camp,wenAndwu,hero])			
+				}
+				await	proxy.$api.add('comment',{...params,likeList:[],heroInfo:heroInfo})
+				initComent()
+			}
+			/**
+				初始化评论
+			 */
+			const initComent = ()=>{
+				proxy.$api.getList('comment',{skip:0,limit:999},{articleId:detailId},{name:'createTime',type:'desc'}).then(res=>{
+					data.comment =[... res.data]
+				})
+			}
+			/**
+				喜欢
+			 */
+
+			const handleLike = (item)=>{
+				const	command = proxy.$api.db.command
+				if(item.likeList.includes(agentMd5))return 	proxy.$message.error({content:'你已经点过赞了'})
+				proxy.$api.db.collection("comment")
+				.doc(item._id)
+				.update({
+					like: command.inc(1),
+					likeList:command.unshift(agentMd5)
+				})
+				.then((res) => {
+				console.log(res);
+					if(res.updated>0){
+						proxy.$message.success({content:'+1'})
+						initComent()
+					}
+				});
+			}
+			initComent()
+			provide('sendComment',sendComment)
+			provide('handleLike',handleLike)
       return{
         data
       }
@@ -146,10 +212,11 @@
         grid-template-row: repeat(2 , 1fr);
         background: white;
         margin-left: 100px;
-        box-shadow:  0px 0px 14px -10px @99-base-color ;
+        box-shadow:@box-shadow ;
     }
+
     .ArticleDetail-container{
-        box-shadow:  0px 0px 14px -10px @99-base-color ;
+        box-shadow:@box-shadow ;
         padding: 20px;
         padding-bottom: 50px;
         background: white;
@@ -159,7 +226,6 @@
             font-size: 28px;
             color: @88-base-color;
         }
-        
         .container-content{
             text-indent: 2em;
             text-align: left;

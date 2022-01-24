@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {defineComponent, reactive, toRefs,createVNode,ref,getCurrentInstance,inject } from 'vue'
+import {defineComponent, reactive, toRefs,createVNode,ref,getCurrentInstance,inject ,watchEffect} from 'vue'
 
 export default defineComponent({
 	name: 'CommonModal',
@@ -41,17 +41,19 @@ export default defineComponent({
 			type:String,
 			default:'tags'
 		},
-		visible:Boolean
 	},
-	setup(props,{emit}) {
+	setup(props,{emit,expose }) {
 		const {proxy} = getCurrentInstance()
 		const confirmLoading = ref(false)
-    const visible = ref(props.visible);
+    const visible = ref(false);
 		const formState = reactive({
 			name:'',
 		})
-		console.log(props.oldData);
 		let sentdata = ref([...props.oldData])
+		watchEffect(()=>{
+			sentdata.value = props.oldData
+		})
+		console.log(props);
 		const handleChange = async (dbName,params,_id) => {
 			confirmLoading.value=true
 			const data = await proxy.$api.set(dbName,{
@@ -72,18 +74,19 @@ export default defineComponent({
 		  handleChange(props.dbName,sentdata.value,props.id)
       visible.value = false;
     };
-		inject('showHandle')
 
-
+		expose({showHandle})
     return {
       visible,
-      showModal,
       hideModal,
 			formState,
 			sentdata,
 			showHandle
     };
   },
+	methods(){
+	
+	},
 	components: {
 		
 	},

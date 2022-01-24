@@ -18,8 +18,8 @@ export const API = {
     * 获取表列表
     * @params  dbname 表名
     * */
-    getList:(dbName,page={skip:0,limit:999},where={})=> {
-      return  request({url:'/getCollection',data:{dbName,page,where}})
+    getList:(dbName,page={skip:0,limit:999},where={},orderBy)=> {
+      return  request({url:'/getCollection',data:{dbName,page,where,orderBy}})
     },
     /**
     * 获取表列表总数
@@ -47,6 +47,18 @@ export const API = {
             db.collection(dbName)
 						.doc(id)
             .set({...params,updataTime:time,createTime:time})
+            .then(res=>{
+                resolve(res)
+                message.success('添加成功!')
+            }).catch(err=>{
+                reject(err)
+            })
+        })
+    },
+		add:(dbName,params)=>{
+        return new Promise((resolve, reject)=>{
+            db.collection(dbName)
+            .add({...params,updataTime:time,createTime:time})
             .then(res=>{
                 resolve(res)
                 message.success('添加成功!')
