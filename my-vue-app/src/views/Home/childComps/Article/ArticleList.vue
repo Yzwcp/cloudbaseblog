@@ -1,8 +1,11 @@
 <template>
     <div class="ArticleList">
-        <div v-for="(item,index) in allData.dataSource" :key="item._id">
-            <ArticleItem   :detail="item"></ArticleItem>
+      <div v-if="initData?.articleList?.length>0">
+        <div v-for="(item,index) in initData.articleList" :key="item.Id">
+          <ArticleItem   :detail="item"></ArticleItem>
         </div>
+      </div>
+      <div v-else style="height:600px">没有数据了</div>
         <!-- <a-pagination v-model="current" :total="allData.dataSource.length" show-less-items /> -->
     </div>
 </template>
@@ -18,7 +21,7 @@ export default defineComponent({
             current:1
         }
     },
-    inject:['allData'],
+    inject:['initData'],
     mounted(){},
     components: {ArticleItem},
 })

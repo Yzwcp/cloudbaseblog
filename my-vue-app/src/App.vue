@@ -4,20 +4,22 @@
  </div>
 </template>
 
-<script>
+          <script>
 import {defineComponent, reactive, toRefs} from 'vue'
 import Layout from '@/components/Layout.vue'
 export default defineComponent({
   name: '',
   props: {
-    
+
   },
   components: {
-    Layout
+        Layout
   },
 })
 </script>
 
 <style >
-
+.app{
+  position: relative;
+}
 </style>

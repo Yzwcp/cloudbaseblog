@@ -2,11 +2,11 @@
  <div>
   <div>
     <folder-open-outlined style="marginRight:6px"/>分类
-    <span style="marginLeft:20px">/{{ allData.categorizeItem.title}}</span>
+    <span style="marginLeft:20px">/{{selectData.value}}</span>
   </div>
   <div>
-    <li @click="categorizeHandle({})">显示全部文章</li>
-    <li v-for="item in allData.categorizeList" :key="item._id" :class="item._id==allData.categorizeItem._id?'active':''" @click="categorizeHandle(item)">{{ item.title }}</li>
+    <li @click="filterAticle(null)">显示全部文章</li>
+    <li v-for="item in initData.classifyList"   :class="item.Id==selectData.Id?'active':''"  :key="item.Id" @click="filterAticle(item)">{{ item.value }}</li>
   </div>
 
  </div>
@@ -21,7 +21,18 @@ export default defineComponent({
   props: {
     
   },
-  inject:['allData','categorizeHandle'],
+  data(){
+    return{
+      selectData:{},
+    }
+  },
+  inject:['initData','categorizeHandle'],
+  methods:{
+    filterAticle(v){
+      this.selectData = {...v}
+      this.categorizeHandle(v?.value)
+    },
+  },
   components: {
     FolderOpenOutlined
   },

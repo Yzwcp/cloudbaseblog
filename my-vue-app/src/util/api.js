@@ -14,6 +14,30 @@ export const API = {
     appCloud,
     db,
     auth,
+    saveArticle:(value)=>{
+      return request({url:'/saveArticle',method:'POST',data:{...value}})
+    },
+    editArticle:(value)=>{
+      return request({url:'/editArticle',method:'POST',data:{...value}})
+    },
+    saveClassify:(value)=>{
+      return request({url:'/saveClassify',params:{value}})
+    },
+    saveTags:(value)=>{
+      return request({url:'/saveTags',params:{value}})
+    },
+    saveComment:(value)=>{
+      return request({url:'/saveComment',method:'POST',data:{...value}})
+    },
+    getQueryAPI:(dbName,where,orderBy,limit)=>{
+        return request({url:'/query',params:{dbName,where,orderBy,limit}})
+    },
+    saveCommonLikeAPI:(dbName,where,userLikeMd5)=>{
+      return request({url:'/saveCommonLike',method:'post',data:{dbName,where,userLikeMd5}})
+    },
+    saveUser:(value)=>{
+      return request({url:'/saveUser',method:'post',data:{...value}})
+    },
     /**
     * 获取表列表
     * @params  dbname 表名
@@ -113,10 +137,10 @@ export const API = {
      * 
      * 
      */
-    uploadOss(file,fileName){
+    uploadOss(path,file,fileName){
         return new Promise((resolve,reject)=>{
             const time = new Date().getTime()
-            client.put('blog/'+time+"_"+fileName,file,{
+            client.put(`blog${path}/${time}_${fileName}`,file,{
                 headers: {'Content-Type': 'image/jpg' }
             })
             .then(function (r1) {

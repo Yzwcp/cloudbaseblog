@@ -4,20 +4,20 @@
 		<div class="comment-sent" >
 			<div class="sent-avatar"><img src="https://blog-umep.oss-cn-hangzhou.aliyuncs.com/blog/1642490261824_12204460de09b2db8eb1f4d3c2e724d9.jpg" alt=""></div>
 			<div class="sent-input">
-				<a-textarea @focus.stop="onFocus"  v-model:value="sendCommentData.value" placeholder="输入评论" :rows="2" />
+				<a-textarea @focus.stop="onFocus"  v-model:value="initData.value" placeholder="输入评论" :rows="2" />
 				<div class="sendBtn" v-show="showSendBtn">
-					<a-button @click="send(sendCommentData)">发送</a-button>
+					<a-button @click="send(initData)">发送</a-button>
 				</div>
 			</div>
 		</div>
 		
 		<div class="title">全部评论</div>
-		<div class="comment-all" @click.self="onBlur" v-for="(item,index) in commentList" :key="item._id">
+		<div class="comment-all" @click.self="onBlur" v-for="(item,index) in comment" :key="item._id">
 			<div class="all-avatar"><img src="https://blog-umep.oss-cn-hangzhou.aliyuncs.com/blog/1642490261824_12204460de09b2db8eb1f4d3c2e724d9.jpg" alt=""></div>
 			<div class="all-content">
 				<div class="all-msg"><span>{{item.heroInfo.split(',')[0]+'-'+item.heroInfo.split(',')[1]}}</span><span>{{item.type==1?'博主':item.heroInfo.split(',')[2]}}</span><span>{{dayjs(item.createTime).format('YYYY/MM/DD/HH:mm:ss') }}</span> </div>
 				<div class="all-txt">{{item.value}} </div>
-				<div class="all-nice" @click="handleLike(item)"><LikeOutlined :style='{color:item.likeList.includes(agentMd5)?"red":""}'/>点赞({{item.like || 0}})</div>
+				<div class="all-nice" @click="handleLike(item)"><LikeOutlined :style='{color:item.likeList.includes(agentMd5)?"red":""}'/>点赞({{item.likeList.split(',',item.likeList.split(',').length-1).length || 0}})</div>
 			</div>
 			
 		</div>
@@ -31,7 +31,7 @@ import dayjs from 'dayjs'
 export default defineComponent({
 	name: 'ArticleComment',
 	props: {
-		article:[Object],
+    articleId:[Number,String],
 		comment:[Array],
 	},
 	inject:['sendComment','handleLike'],
@@ -41,22 +41,18 @@ export default defineComponent({
 	},
 	setup(props,context){
 		let showSendBtn = ref(false)
-		const {article} = toRefs(props)
+		const {articleId='',comment=[]} = toRefs(props)
 		const {proxy} =getCurrentInstance()
-		const	command = proxy.$api.db.command
-		const sendCommentData = reactive({
-			articleId:article._id,
+		const initData = reactive({
+			articleId:articleId,
 			value:'',
 			userId:null,
 			parentId:null,
 			myName:'匿名用户',
 			type:0,
-			like:0,
 		})
-		const commentList = ref(props.comment)
 		watchEffect(()=>{
-			sendCommentData.articleId = article.value
-			 commentList.value = props.comment
+			initData.articleId = articleId
 		})
 		const onFocus = () =>{
 			showSendBtn.value = true
@@ -66,12 +62,13 @@ export default defineComponent({
 		}
 		const sendComment= inject('sendComment')
 		const send = () =>{
-			sendComment(sendCommentData)
-			sendCommentData.value = ''
+		  if (!initData.value) return proxy.$message.info('请输入评论')
+			sendComment(initData)
+			initData.value = ''
 		}
 		return {
 			onFocus,onBlur,send,
-			showSendBtn,sendCommentData,commentList
+			showSendBtn,initData,comment
 		}
 	},
 	components: {

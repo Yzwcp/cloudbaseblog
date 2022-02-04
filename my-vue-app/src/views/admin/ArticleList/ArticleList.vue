@@ -38,18 +38,9 @@ export default defineComponent({
         let data = reactive({
             dataSource:[]
         })
-        proxy.$api.getCount('article').then(res=>{
-            total.value = res.total
-        })
-        const initList = ()=>{
-            loading.value=true
-            proxy.$api.getList('article',{skip:(current.value-1)*limit,limit}).then(res=>{  
-                console.log(res)
-                data.dataSource= [...res.data]
-
-            }).finally(()=>{
-                loading.value=false
-            })
+        const getArticle  = async () => {
+          const { result , success } = await proxy.$api.getQueryAPI('article')
+          data.dataSource = [...result]
         }
         const pagination = computed(() => ({
             total: total.value,
@@ -70,7 +61,7 @@ export default defineComponent({
             current.value =v.current
             initList()
         }
-        initList()
+        getArticle()
         return{
             data,
             columns,

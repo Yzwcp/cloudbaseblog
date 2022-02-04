@@ -8,13 +8,13 @@
     <title>Vite App</title>
   </head>
   <body>
-    <script src="https://cdn.bootcdn.net/ajax/libs/ali-oss/6.16.0/aliyun-oss-sdk.min.js"></script>
-		<script src="https://cdn.bootcdn.net/ajax/libs/blueimp-md5/2.19.0/js/md5.js"></script>
+    <script src='./src/util/aliyun-oss-sdk.js'></script>
+		<script src="./src/util/md5.js"></script>
 
 		<script>
 			function ipCallback (res){
 				var agent = navigator.userAgent.toLowerCase();
-				window.agentMd5 = md5(agent+res.ip)
+        md5 && (window.agentMd5 = md5(agent+res.ip) || 'name')
 			}
 		</script>
 		<script src="https://www.taobao.com/help/getip.php"></script>

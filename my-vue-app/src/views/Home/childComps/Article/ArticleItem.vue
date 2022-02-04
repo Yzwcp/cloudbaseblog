@@ -1,32 +1,34 @@
 <template>
     <div class="ArticleItem">
-        <router-link :to="{path:'/detail',query:{id:detail._id}}">
         <div class="ArticleItem-container">
+          <div>
             <div class="container-title">{{detail.title}}</div>
             <ul >
-                <div class="pub-article-extra">
-                  <FolderOutlined />
-                  <span>分类:</span>
-                  <div>{{detail.categorize}}</div>
-                </div>
-                <div class="pub-article-extra">
-                  <tag-outlined />
-                  <span>标签:</span>
-                  <div><a-tag color="blue" v-for="item in detail.tags " :key="item">{{item}}</a-tag></div>
-                </div>
-                <div class="pub-article-extra">
-                  <FieldTimeOutlined/>
-                  <span>创建时间:</span>
-                  <div>{{((new Date(detail.createTime)).toLocaleString())}}</div>
-                </div>
-                
+              <div class="pub-article-extra">
+                <FolderOutlined />
+                <span>分类:</span>
+                <div>{{detail.categorize}}</div>
+              </div>
+              <div class="pub-article-extra">
+                <tag-outlined />
+                <span>标签:</span>
+                <div><a-tag color="blue" v-for="item in detail.tags.split(',') " :key="item">{{item}}</a-tag></div>
+              </div>
+              <div class="pub-article-extra">
+                <FieldTimeOutlined/>
+                <div>{{((new Date(detail.createTime)).toLocaleString())}}</div>
+              </div>
+
             </ul>
             <div id="containercontent">
-							{{detail.describe}}
+              {{detail.myDescribe}}
             </div>
-     
+          </div>
+          <div class="pub-article-cover" >
+            <img v-if="detail.cover" :src="detail.cover" alt="">
+          </div>
         </div>
-        </router-link>
+
     </div>
 </template>
 
@@ -59,14 +61,35 @@ export default defineComponent({
 </script>
 
 <style  lang='less'>
-    .ArticleItem{margin-bottom: 40px;}
+    .ArticleItem{
+      margin-bottom: 40px;
+      position: relative;
+      height:200px;
+      box-sizing: border-box;
+      overflow: hidden;
+
+    }
     .ArticleItem-container{
         box-shadow:@box-shadow ;
         padding: 20px;
         padding-bottom: 50px;
         background: white;
         border-radius: 10px;
-        .container-title{
+        display: flex;
+      .pub-article-cover{
+        position: absolute;
+        right: 0;
+        top: 0;
+        height:172px;
+        display: block;
+        img{
+          width: 300px;
+          border-radius: 6px;
+          height: 100%;
+          display: block;
+        }
+      }
+      .container-title{
             font-weight: 600;
             font-size: 28px;
             color: @88-base-color;
@@ -87,7 +110,21 @@ export default defineComponent({
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             margin-bottom: 20px;
+          .pub-article-cover{
+            position: absolute;
+            right: 0;
+            top: 0;
+            height:172px;
+            display: block;
+            img{
+              width: 300px;
+              border-radius: 6px;
+              height: 100%;
+              display: block;
+            }
+          }
         }
+
 				#containercontent{
 					color: black;
 				}
