@@ -7,6 +7,20 @@ import "vditor/dist/index.css"
 import 'ant-design-vue/dist/antd.less';
 import {API,appCloud} from '@/util/api.js'
 import store from './store'
+
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('UMEP_BLOG')
+  console.log(token)
+  if(to.meta.admin && !to.path.includes('login')){
+    if(token) return  next()
+    message.info('请登录')
+    next({path:'/login'})
+  }else{
+    next()
+  }
+})
+
 const app = createApp(App).use(store)
 app.config.globalProperties.$api = API;
 app.config.globalProperties.$message = message;

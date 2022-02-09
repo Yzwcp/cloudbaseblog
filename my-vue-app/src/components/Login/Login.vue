@@ -53,15 +53,23 @@
                 remember: true,
             });
             // console.log(proxy.$api.auth.getAuthHeader());
+            // const onFinish =async (values) => {
+            //   const data =   await proxy.$api.register({...values})
+            //   console.log(data)
+            //   if(data.success){
+            //     localStorage.setItem('UMEP_BLOG',data.token)
+            //     proxy.$message.success('注册成功')
+            //   }
+            // };
             const onFinish =async (values) => {
-              const data =   await proxy.$api.saveUser({...values})
-              console.log(data)
-              if(data.success){
-                localStorage.setItem('UMEP_BLOG',data.token)
-                proxy.$message.success('登录成功')
-              }
+                const data =   await proxy.$api.login({...values})
+                console.log(data)
+                if(data.success){
+                    localStorage.setItem('UMEP_BLOG',data.token)
+                    router.push({path:'admin'})
+                    proxy.$message.success('登录成功')
+                }
             };
-
             const onFinishFailed = (errorInfo) => {
                 console.log('Failed:', errorInfo);
             };

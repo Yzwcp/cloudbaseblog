@@ -12,10 +12,10 @@
                         <desktop-outlined />
                         <router-link  to="/admin/article"><span>文章</span></router-link>
                     </a-menu-item>
-                    <a-menu-item key="/admin/Categorize">
-                        <desktop-outlined />
-                        <router-link  to="/admin/Categorize"><span>分类</span></router-link>
-                    </a-menu-item>
+<!--                    <a-menu-item key="/admin/Categorize">-->
+<!--                        <desktop-outlined />-->
+<!--                        <router-link  to="/admin/Categorize"><span>分类</span></router-link>-->
+<!--                    </a-menu-item>-->
                     <!-- <a-menu-item key="/admin/Tags">
                         <desktop-outlined />
                         <router-link  to="/admin/Tags"><span>标签</span></router-link>

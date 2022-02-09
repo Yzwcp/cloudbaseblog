@@ -29,113 +29,22 @@ export const API = {
     saveComment:(value)=>{
       return request({url:'/saveComment',method:'POST',data:{...value}})
     },
-    getQueryAPI:(dbName,where,orderBy,limit)=>{
-        return request({url:'/query',params:{dbName,where,orderBy,limit}})
+    getQueryAPI:(dbName,where,orderBy,limit,from)=>{
+        return request({url:'/query',params:{dbName,where,orderBy,limit,from}})
     },
     saveCommonLikeAPI:(dbName,where,userLikeMd5)=>{
       return request({url:'/saveCommonLike',method:'post',data:{dbName,where,userLikeMd5}})
     },
-    saveUser:(value)=>{
-      return request({url:'/saveUser',method:'post',data:{...value}})
+    register:(value)=>{
+      return request({url:'/register',method:'post',data:{...value}})
     },
-    /**
-    * 获取表列表
-    * @params  dbname 表名
-    * */
-    getList:(dbName,page={skip:0,limit:999},where={},orderBy)=> {
-      return  request({url:'/getCollection',data:{dbName,page,where,orderBy}})
-    },
-    /**
-    * 获取表列表总数
-    * @params  dbname 表名
-    * */
-     getCount:(dbName)=>{
-        return new Promise((resolve, reject)=>{
-            db.collection(dbName)
-            .limit(99)
-            .count()
-            .then(res=>{
-                resolve(res)
-            })
-        })
-    },
-    /**
-     * 创建记录
-     * @params dbname 表名
-     * @params params 参数
-     * */
-    set:(dbName,params)=>{
-        return new Promise((resolve, reject)=>{
-						let id = params._id
-            if(params._id) delete params._id
-            db.collection(dbName)
-						.doc(id)
-            .set({...params,updataTime:time,createTime:time})
-            .then(res=>{
-                resolve(res)
-                message.success('添加成功!')
-            }).catch(err=>{
-                reject(err)
-            })
-        })
-    },
-		add:(dbName,params)=>{
-        return new Promise((resolve, reject)=>{
-            db.collection(dbName)
-            .add({...params,updataTime:time,createTime:time})
-            .then(res=>{
-                resolve(res)
-                message.success('添加成功!')
-            }).catch(err=>{
-                reject(err)
-            })
-        })
-    },
-    /**
-     * 更新记录
-     * @params dbname 表名
-     * @params params 参数
-     * */
-    update:(dbName,params)=>{
-        return new Promise((resolve, reject)=>{
-            let id = params._id
-            if(params._id) delete params._id
-            db.collection(dbName)
-              .doc(id)
-              .update({...params,updataTime:time})
-              .then(res=>{
-                  resolve(res)
-                  message.success('修改成功')
-              }).catch(err=>{
-                  reject(err)
-                  message.success('修改失败')
-            })
-        })
-    },
-    /**
-     * 获取单条
-     * @params dbname 表名
-     * @params params 参数
-     * */
-    getDetail:(dbName,params)=>{
-        return new Promise((resolve, reject)=>{
-            let id = params._id
-            if(params._id) delete params._id
-            db.collection(dbName)
-              .where({_id:id})
-              .get()
-              .then(res=>{
-                  resolve(res)
-              }).catch(err=>{
-                reject(err)
-                message.success('获取失败')
-            })
-        })
+    login:(value)=>{
+      return request({url:'/login',method:'post',data:{...value}})
     },
     /**
      * 上传文件
-     * 
-     * 
+     *
+     *
      */
     uploadOss(path,file,fileName){
         return new Promise((resolve,reject)=>{
@@ -149,7 +58,7 @@ export const API = {
             .catch(function (err) {
                 console.log('error: %j', err);
                 reject(err)
-            }); 
+            });
         })
     },
 }

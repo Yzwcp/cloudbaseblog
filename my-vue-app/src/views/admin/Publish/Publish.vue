@@ -238,6 +238,7 @@
         if(success){
           proxy.$message.success(message)
         }
+        return
         router.push({
           path:'/detail',
           query:{id:result.insertId}

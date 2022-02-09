@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/',
     redirect:'/index'
-    
+
   },
   {
     path: '/index',
@@ -28,7 +28,7 @@ const routes = [
     component: ArticleDetail,
     meta:{admin:false,title:'文章详情',route:'/detail'},
   },
- 
+
   {
     path: '/admin',
     name: 'admin',

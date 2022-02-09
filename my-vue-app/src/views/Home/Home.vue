@@ -7,9 +7,9 @@
    </div>
    <div class="article-ArticleList">
       <ArticleList />
-    
+
       <!-- <router-view/> -->
-      <a-pagination  v-model:current="page.current" :total="page.total" :pageSize='page.skip' @change='changeCurrent'/>
+      <a-pagination  v-model:current="page.current" :total="page.total" :pageSize='page.pageSize' @change='changeCurrent'/>
 
    </div>
    <div class="article-Overview">
@@ -44,7 +44,7 @@ export default defineComponent({
     const page = reactive({
       current:1,//当前页
       limit:`1,${HOME_LIMIT}`,
-      skip:HOME_LIMIT,//显示多少条默认5
+      pageSize:HOME_LIMIT,//显示多少条默认5
       orderBy:'id',
       where:'',
       total:0
@@ -122,8 +122,7 @@ export default defineComponent({
     //页码修改
     const changeCurrent = (v) =>{
       page.current = v
-      page.limit  = (v-1)*page.skip+','+page.skip
-      console.log(page.limit)
+      page.limit  = (v-1)*page.pageSize+','+page.pageSize
       getArticle()
       // router.push({name:'Home',params:{id:v}})
       // initData() 1 5    6 10  11 15
