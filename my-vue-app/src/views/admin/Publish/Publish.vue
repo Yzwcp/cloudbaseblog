@@ -83,13 +83,19 @@
             <a-button
                 type="primary"
                 :disabled="fileList.length === 0"
-                :loading="uploading"
                 style="margin-top: 16px"
                 @click="handleUpload"
             >
               {{ uploading ? '上传中' : '上传' }}
             </a-button>
-
+            <a-upload
+              name="file"
+              :multiple="true"
+              action="http://localhost:3000/upload"
+              @change="handleChange"
+            >
+              <a-button> <a-icon type="upload" /> Click to Upload </a-button>
+            </a-upload>
           </a-col>
           <a-col :span='2' v-if="fileList.length > 0 && formState.cover">
             <a-form-item name="cover">
@@ -238,7 +244,6 @@
         if(success){
           proxy.$message.success(message)
         }
-        return
         router.push({
           path:'/detail',
           query:{id:result.insertId}
@@ -258,12 +263,22 @@
       //上传文件
       const handleUpload = () => {
         uploading.value = true; // You can use any AJAX library you like
-        proxy.$api.uploadOss(path.value,fileList.value[0],fileList.value[0].name).then(res=>{
+        proxy.$api.upload({file:fileList.value[0],name:fileList.value[0].name},).then(res=>{
           console.log(res);
           formState.cover = res
           uploading.value=false
         })
       };
+      function handleChange(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          proxy.$message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          proxy.$message.error(`${info.file.name} file upload failed.`);
+        }
+      }
       const copyImgSrc  = () => {
         // const input = document.createElement('input');
         // document.body.appendChild(input);
@@ -297,6 +312,7 @@
         handleRemove,
         beforeUpload,
         handleUpload,
+        handleChange
       };
     },
     components: {

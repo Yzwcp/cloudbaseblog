@@ -41,6 +41,9 @@ export const API = {
     login:(value)=>{
       return request({url:'/login',method:'post',data:{...value}})
     },
+    upload:(value)=>{
+        return request({url:'/upload',method:'post',data:{...value}})
+    },
     /**
      * 上传文件
      *

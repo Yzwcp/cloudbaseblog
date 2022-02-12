@@ -30,7 +30,7 @@ instance.interceptors.response.use(
       //这里根据后端提供的数据进行对应的处理
     // console.log(response)
     if (!response.data.success) {
-      message.error(response.data.message)
+      return  message.error(response.data.message)
     }
     if(response.status==200) return response
   },
