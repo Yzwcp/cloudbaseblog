@@ -1,5 +1,5 @@
 <template>
-    <div class="ArticleItem">
+    <div class="ArticleItem" @click="goDetail(detail.Id)"> 
         <div class="ArticleItem-container">
           <div>
             <div class="container-title">{{detail.title}}</div>
@@ -45,8 +45,8 @@ export default defineComponent({
         router.push({
           //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
           name: 'ArticleDetail',
-          params: {
-            text:JSON.stringify(value)
+          query: {
+            id:value
           }
         });
       }

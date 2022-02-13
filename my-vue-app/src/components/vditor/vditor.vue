@@ -7,6 +7,7 @@
 <script>
     import {defineComponent, reactive, toRefs,onMounted} from 'vue'
     import Vditor from "vditor";
+// import { log } from '@/util/aliyun-oss-sdk';
     export default defineComponent({
         name: "vditor",
         props: {
@@ -34,6 +35,23 @@
 								lineNumber:true
 							}
 						},
+            upload: {
+              // accept: 'image/*,.mp3, .wav, .rar',
+              // token: 'test',
+              url: 'http://localhost:3000/upload',
+              // linkToImgUrl: '/api/upload/fetch',
+              // filename (name) {
+              //   return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
+              //     replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
+              //     replace('/\\s/g', '')
+              // },
+              fieldName:'file',
+              success:(_,msg)=>{
+                console.log(msg);
+                console.log(JSON.parse(msg));
+                this.insertValue(`![${JSON.parse(msg).result.name}](${JSON.parse(msg).result.url})`)
+              },
+            },
 						comment:{
 							enable:true
 						},
@@ -52,6 +70,9 @@
             },
             setValue(v){
                 this.contentEditor.setValue(v)
+            },
+            insertValue(v){
+              this.contentEditor.insertValue(v)
             },
         },
         components: {},

@@ -36,14 +36,18 @@ instance.interceptors.response.use(
   },
   error => {
       //响应错误处理
-      if(JSON.parse(JSON.stringify(error.response))){
-        let res = JSON.parse(JSON.stringify(error.response))
-        console.log(res)
-        if(res.data.message.indexOf('token')>-1){
+      console.log(JSON.parse(JSON.stringify(error.response)));
+      let response = JSON.parse(JSON.stringify(error.response))
+      if(Object.keys(response).length>0){
+        if(response.data.message.indexOf('token')>-1){
           localStorage.removeItem('UMEP_BLOG')
           window.location.reload()
         }
+        
       }
+      // if(!error.status){
+      //   notification.error({description:err.message,message:err.name})
+      // }
   })
   instance(config)
       .then(res => {
