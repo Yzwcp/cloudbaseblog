@@ -29,6 +29,5 @@ export default defineComponent({
 
 <style scoped lang='less'>
     .ArticleList{
-        padding: 0px 20px;
     }
 </style>

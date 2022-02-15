@@ -52,7 +52,7 @@
         inject:['initData','tagsHandle'],
 
         setup(){
-          
+
           return{
           }
         },
@@ -60,9 +60,8 @@
 </script>
 
 <style scoped lang='less'>
-  
+
     .Overview{
-        margin-left: 30px;
         overflow: visible;
         >div{
             background: white;
@@ -93,7 +92,7 @@
             grid-template-columns: 2fr 1fr;
             grid-template-row: repeat(2 , 1fr);
         }
-        
+
     }
 
 </style>

@@ -1,20 +1,20 @@
 <template>
  <div class="home">
   <div class="banner"></div>
-  <div class="article">
-   <div class="article-filter">
-     <ArticleFilter ref="classifyRef"/>
-   </div>
-   <div class="article-ArticleList">
-      <ArticleList />
+  <div class="article" >
+   <a-row class="article-filter" type="flex" justify="center" >
+     <a-col :span="3">
+       <ArticleFilter ref="classifyRef"/>
+     </a-col>
+     <a-col :span="10" style="margin:0 30px">
+       <ArticleList />
+       <a-pagination  v-model:current="page.current" :total="page.total" :pageSize='page.pageSize' @change='changeCurrent'/>
+     </a-col>
+     <a-col :span="5">
+       <Overview/>
+     </a-col>
+   </a-row>
 
-      <!-- <router-view/> -->
-      <a-pagination  v-model:current="page.current" :total="page.total" :pageSize='page.pageSize' @change='changeCurrent'/>
-
-   </div>
-   <div class="article-Overview">
-    <Overview/>
-   </div>
   </div>
  </div>
 </template>
@@ -26,9 +26,9 @@ import ArticleFilter from './childComps/ArticleFilter/ArticleFilter.vue'
 import {defineComponent, reactive, toRefs,getCurrentInstance,provide,ref} from 'vue'
 import { UploadOutlined } from '@ant-design/icons-vue';
 import {useRouter} from 'vue-router'
-import {HOME_LIMIT} from '@/util/config.js'
+// import {HOME_LIMIT} from '@/util/mysql.js'
 
-
+const HOME_LIMIT =10
 export default defineComponent({
   name: 'Home',
   props: {
@@ -159,17 +159,17 @@ export default defineComponent({
   .home{
     padding: 50px 0;
   }
-  .article{
-    display: flex;
-  }
-  .article-filter{
-    flex: .5;
-  }
- .article-ArticleList{
-   padding: 20px;
-   flex: 3;
- }
- .article-Overview{
-  flex: 1;
- }
+ /* .article{*/
+ /*   display: flex;*/
+ /* }*/
+ /* .article-filter{*/
+ /*   flex: .5;*/
+ /* }*/
+ /*.article-ArticleList{*/
+ /*  padding: 20px;*/
+ /*  flex: 3;*/
+ /*}*/
+ /*.article-Overview{*/
+ /* flex: 1;*/
+ /*}*/
 </style>

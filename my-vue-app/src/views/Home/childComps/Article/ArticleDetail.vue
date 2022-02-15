@@ -1,39 +1,38 @@
 <template>
     <div class="ArticleDetail">
         <!-- <div id="outline"></div> -->
-        <div class="ArticleDetail-container">
-            <div class="container-title">{{detail.title}}</div>
-            <ul  class="container-msg">
-                <div class="pub-article-extra">
-                  <FolderOutlined />
-                  <span>分类:</span>
-                  <div>{{detail.categorize}}</div>
-                </div>
-                <div class="pub-article-extra">
-                  <tag-outlined />
-                  <span>标签:</span>
-                  <div><a-tag color="blue" v-for="item in detail?.tags?.split(',') " :key="item">{{item}}</a-tag></div>
-                </div>
-                <div class="pub-article-extra">
-                  <FieldTimeOutlined/>
-                  <span>创建时间:</span>
-                  <div>{{((new Date(detail.createTime)).toLocaleString())}}</div>
-                </div>
-                <div class="pub-article-extra" @click="handleAricleLike(detail)">
-                  <like-outlined :style='{"color":detail?.likeList?.indexOf(agentMd5)>-1?"red":""}'/>
-                  <span>like:</span>
-                  <div>{{detail?.likeList?.split(',',detail?.likeList?.split(',').length-1).length || 0}}</div>
-                </div>
-            </ul>
-            <div id="preview"> </div>
-
-        </div>
-        <div>
-          <div id="outline"></div>
-        </div>
-        
-        <ArticleComment :articleId='detail.Id' :comment='comment'/>
-				
+      <a-row type="flex" justify="center" >
+        <a-col :span="12">
+          <div class="ArticleDetail-container">
+              <div class="container-title">{{detail.title}}</div>
+              <ul  class="container-msg">
+                  <div class="pub-article-extra">
+                    <FolderOutlined />
+                    <span>分类:</span>
+                    <div>{{detail.categorize}}</div>
+                  </div>
+                  <div class="pub-article-extra">
+                    <tag-outlined />
+                    <span>标签:</span>
+                    <div><a-tag color="blue" v-for="item in detail?.tags?.split(',') " :key="item">{{item}}</a-tag></div>
+                  </div>
+                  <div class="pub-article-extra">
+                    <FieldTimeOutlined/>
+                    <span>创建时间:</span>
+                    <div>{{((new Date(detail.createTime)).toLocaleString())}}</div>
+                  </div>
+                  <div class="pub-article-extra" @click="handleAricleLike(detail)">
+                    <like-outlined :style='{"color":detail?.likeList?.indexOf(agentMd5)>-1?"red":""}'/>
+                    <span>like:</span>
+                    <div>{{detail?.likeList?.split(',',detail?.likeList?.split(',').length-1).length || 0}}</div>
+                  </div>
+              </ul>
+              <div id="preview"> </div>
+          </div>
+          <ArticleComment :articleId='detail.Id' :comment='comment'/>
+        </a-col>
+<!--        <a-col :span="4"><div><div id="outline"></div></div></a-col>-->
+      </a-row>
     </div>
 </template>
 
@@ -42,7 +41,6 @@
   import {HomeOutlined,TagOutlined,FolderOutlined,FieldTimeOutlined,LikeOutlined} from '@ant-design/icons-vue';
 	import ArticleComment from './ArticleComment.vue'
   import Vditor from "vditor";
-	import config from '@/util/config.js'
   import { useRoute } from 'vue-router'
   export default defineComponent({
     name: 'ArticleDetail',
@@ -139,7 +137,7 @@
 					const {sanGuo} = config
 					const list1 = ['曹魏','蜀汉','孙吴']
 					const list2 = ['文臣','武将']
-					const t = Object.keys(sanGuo).length -1 
+					const t = Object.keys(sanGuo).length -1
 					const campRandom = Math.round(Math.random()*t) // 阵营 随机数
 					const camp = list1[campRandom]//阵营
 					const wenAndwuRandom = Math.round(Math.random()*1) // 文 or 武 随机数
@@ -148,7 +146,7 @@
 					const t3 = Math.round(Math.random()*(list3.length-1))//随机一个英雄
 					const hero = list3[t3]
 					heroInfo = [camp,wenAndwu,hero]
-					localStorage.setItem('heroInfo',[camp,wenAndwu,hero])			
+					localStorage.setItem('heroInfo',[camp,wenAndwu,hero])
 				}
 				const { result , success ,message } = await proxy.$api.saveComment({...params,likeList:'',heroInfo:heroInfo})
         if(success){
@@ -208,12 +206,12 @@
 </script>
 
 <style scoped lang='less'>
-  
+
     .ArticleDetail{
       margin-bottom: 40px;
       padding: 50px 0;
       display: grid;
-      grid-template-columns: 3fr  1fr;
+      /*grid-template-columns: 3fr  1fr;*/
     }
     #outline{
         width: 300px;

@@ -22,4 +22,4 @@ export default {
 
 }
 // 首页每页数量
-export const HOME_LIMIT = 2
+export const HOME_LIMIT = 10

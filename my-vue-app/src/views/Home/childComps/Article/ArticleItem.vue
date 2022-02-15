@@ -1,6 +1,11 @@
 <template>
-    <div class="ArticleItem" @click="goDetail(detail.Id)"> 
+    <div class="ArticleItem" @click="goDetail(detail.Id)">
         <div class="ArticleItem-container">
+          <div class="circle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
           <div>
             <div class="container-title">{{detail.title}}</div>
             <ul >
@@ -24,9 +29,9 @@
               {{detail.myDescribe}}
             </div>
           </div>
-          <div class="pub-article-cover" >
-            <img v-if="detail.cover" :src="detail.cover" alt="">
-          </div>
+<!--          <div class="pub-article-cover" >-->
+<!--            <img v-if="detail.cover" :src="'http://blog-umep.oss-cn-hangzhou.aliyuncs.com/blog/article_cover/img_1644894851896.png?x-oss-process=image/resize,w_150'" alt="">-->
+<!--          </div>-->
         </div>
 
     </div>
@@ -62,6 +67,7 @@ export default defineComponent({
 
 <style  lang='less'>
     .ArticleItem{
+      cursor: pointer;
       margin-bottom: 40px;
       position: relative;
       height:200px;
@@ -75,7 +81,10 @@ export default defineComponent({
         padding-bottom: 50px;
         background: white;
         border-radius: 10px;
-        display: flex;
+        text-align: center;
+      .circle{
+        span{ width: 30px;height: 30px;border-radius: 15px;background: red}
+      }
       .pub-article-cover{
         position: absolute;
         right: 0;
@@ -101,15 +110,18 @@ export default defineComponent({
                 opacity: .5;
             }
         }
+        ul{margin: 10px 0;}
+        #containercontent{text-align: left}
         .container-content{
             text-indent: 2em;
-            text-align: left;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             margin-bottom: 20px;
+            text-align: left !important;
+
           .pub-article-cover{
             position: absolute;
             right: 0;
@@ -125,9 +137,7 @@ export default defineComponent({
           }
         }
 
-				#containercontent{
-					color: black;
-				}
+
         .container-comein{
             float: right;
             font-size: 18px;

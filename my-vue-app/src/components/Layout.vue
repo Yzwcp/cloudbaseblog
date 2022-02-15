@@ -15,7 +15,7 @@
                     </component>
                 </keep-alive>
             </router-view>
-            
+
              <router-view v-if="!$route.meta.keepAlive && !$route.meta.admin"/>
          </div>
          <div class="footer">
@@ -33,7 +33,7 @@
                     </component>
                 </keep-alive>
             </router-view>
-            
+
              <router-view v-if="!$route.meta.keepAlive"/>
      </div>
 
@@ -63,8 +63,6 @@ export default defineComponent({
     .header{
     }
     .container{
-      width: 1400px;
-      margin: 0 auto;
     }
 
 

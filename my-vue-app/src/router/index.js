@@ -7,6 +7,7 @@ import Categorize from "@/views/admin/Categorize/Categorize.vue";
 import Tags from "@/views/admin/Tags/Tags.vue";
 import Login from "@/components/Login/Login.vue";
 import ArticleDetail from '@/views/Home/childComps/Article/ArticleDetail.vue'
+import thirdParty from "@/views/thirdParty/thirdParty.vue";
 import HomeArticleList from "@/views/Home/childComps/Article/ArticleList.vue";
 
 const routes = [
@@ -64,6 +65,12 @@ const routes = [
     component: Login,
     meta:{admin:true,title:'登录',route:'/login'},
 
+  },
+  {
+    path: '/thirdParty',
+    name: 'thirdParty',
+    component: thirdParty,
+    meta:{admin:false,title:'资源',route:'/thirdParty'},
   },
 
 

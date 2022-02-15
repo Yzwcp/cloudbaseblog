@@ -2,9 +2,9 @@
   <div class="TopMenu">
     <ul>
       <li><router-link :to="'/index/'">首页</router-link></li>
-      <li><a javascript=";">图库</a></li>
+      <li><router-link :to="'/thirdParty'">资源</router-link></li>
       <li><a javascript=";">音乐</a></li>
-      <li><a javascript=";">登录</a></li>
+      <li><router-link :to="'/admin'">登录</router-link></li>
     </ul>
   </div>
 </template>
@@ -15,10 +15,10 @@ import {defineComponent, reactive, toRefs} from 'vue'
 export default defineComponent({
   name: 'TopMenu',
   props: {
-    
+
   },
   components: {
-    
+
   },
 })
 </script>

@@ -35,6 +35,13 @@
 								lineNumber:true
 							}
 						},
+            counter:{
+                enable:true
+            },
+            outline:{
+                enable:true
+            },
+            toolbar:["emoji",'upload','fullscreen','edit-mode'],
             upload: {
               // accept: 'image/*,.mp3, .wav, .rar',
               // token: 'test',

@@ -18,7 +18,6 @@ import {columns} from "@/views/admin/ArticleList/columns";
 // import {TAGSDICT} from '@/util/map.js'
 import dayjs from "dayjs";
 import {useRouter} from 'vue-router'
-import {HOME_LIMIT} from "@/util/config.js";
 export default defineComponent({
     name: "AdminArticleList",
     data(){
