@@ -6,7 +6,7 @@
   </div>
   <div>
     <li @click="filterAticle(null)">显示全部文章</li>
-    <li v-for="item in initData.classifyList"   :class="item.Id==selectData.Id?'active':''"  :key="item.Id" @click="filterAticle(item)">{{ item.value }}</li>
+    <li v-for="item in initData.classifyList"   :class="item.id==selectData.id?'active':''"  :key="item.Id" @click="filterAticle(item)">{{ item.value }}</li>
   </div>
 
  </div>

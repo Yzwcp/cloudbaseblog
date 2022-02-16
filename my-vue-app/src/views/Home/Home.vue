@@ -45,11 +45,16 @@ export default defineComponent({
      */
     const page = reactive({
       current:1,//当前页
-      limit:`1,${HOME_LIMIT}`,
+      // pageNum:`1,${HOME_LIMIT}`,
       pageSize:HOME_LIMIT,//显示多少条默认5
-      orderBy:'id',
-      where:'',
       total:0
+    })
+    /**
+     * 查询条件
+     */
+    const condition = reactive({
+      orderBy:'id,DESC',
+      where:{},
     })
     /**
      *清除查询条件
@@ -71,11 +76,15 @@ export default defineComponent({
      * 获取文章
      */
     const getArticle  = async () => {
-      const { result , success ,message ,total} = await proxy.$api.getQueryAPI('article',page.where,page.orderBy,page.limit)
+      const { result , success ,message ,total} = await proxy.$api.getQueryAPI('article',{
+        ...page,
+        ...condition
+      })
       if(success){
-        initData.articleList = [...result]
-        page.total = total
-        initData.articleTotal = total
+        console.log(result);
+        initData.articleList = result.rows
+        page.total = result.count
+        initData.articleTotal = result.count
       }
     }
     /**
@@ -83,7 +92,7 @@ export default defineComponent({
      * @returns {Promise<void>}
      */
     const getClassify  = async () => {
-      const {result=[],success,total=0} = await proxy.$api.getQueryAPI('atc_classify')
+      const {result=[],success,total=0} = await proxy.$api.getQueryAPI('categorize')
       if (success){
         initData.classifyList = [...result]
         initData.classifyTotal = total
@@ -94,10 +103,10 @@ export default defineComponent({
      * @returns {Promise<void>}
      */
     const getTags  = async () => {
-      const {result=[],success,total=0} = await proxy.$api.getQueryAPI('atc_tags')
+      const {result=[],success,total=0} = await proxy.$api.getQueryAPI('tags')
       if (success){
-        initData.tagsList = [...result]
-        initData.tagsTotal = total
+        initData.tagsList = [...result.rows]
+        initData.tagsTotal = result.count
       }
     }
     /**
@@ -124,7 +133,7 @@ export default defineComponent({
     //页码修改
     const changeCurrent = (v) =>{
       page.current = v
-      page.limit  = (v-1)*page.pageSize+','+page.pageSize
+      // page.limit  = (v-1)*page.pageSize+','+page.pageSize
       getArticle()
       // router.push({name:'Home',params:{id:v}})
       // initData() 1 5    6 10  11 15
@@ -132,7 +141,7 @@ export default defineComponent({
     const initFn  = () => {
       getArticle()
       getTags()
-      getClassify()
+      // getClassify()
     }
     initFn()
 

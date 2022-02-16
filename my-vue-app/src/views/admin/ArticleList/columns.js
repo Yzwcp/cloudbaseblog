@@ -1,7 +1,7 @@
 export  const columns = [
     {
         name: 'id',
-        dataIndex: '_id',
+        dataIndex: 'id',
         key: 'id',
     },
     {
@@ -25,15 +25,15 @@ export  const columns = [
         dataIndex: 'show',
     },{
         title: '创建时间',
-        key: 'createTime',
-        dataIndex: 'createTime',
+        key: 'createdAt',
+        dataIndex: 'createdAt',
     },{
         title: '更新时间',
-        key: 'updataTime',
-        dataIndex: 'updataTime',
+        key: 'updatedAt',
+        dataIndex: 'updatedAt',
     },
     {
-        title: '作者',
+        title: '权限',
         key: 'auth',
         dataIndex: 'auth',
     },{

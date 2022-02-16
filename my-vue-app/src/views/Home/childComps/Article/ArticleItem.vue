@@ -1,5 +1,5 @@
 <template>
-    <div class="ArticleItem" @click="goDetail(detail.Id)">
+    <div class="ArticleItem" @click="goDetail(detail.id)">
         <div class="ArticleItem-container">
           <div class="circle">
             <span></span>
@@ -17,16 +17,16 @@
               <div class="pub-article-extra">
                 <tag-outlined />
                 <span>标签:</span>
-                <div><a-tag color="blue" v-for="item in detail.tags.split(',') " :key="item">{{item}}</a-tag></div>
+                <div><a-tag color="blue" v-for="item in detail?.tags?.split(',') " :key="item">{{item}}</a-tag></div>
               </div>
               <div class="pub-article-extra">
                 <FieldTimeOutlined/>
-                <div>{{((new Date(detail.createTime)).toLocaleString())}}</div>
+                <div>{{((new Date(detail.createdAt)).toLocaleString())}}</div>
               </div>
 
             </ul>
             <div id="containercontent">
-              {{detail.myDescribe}}
+              {{detail.updatedAt}}
             </div>
           </div>
 <!--          <div class="pub-article-cover" >-->

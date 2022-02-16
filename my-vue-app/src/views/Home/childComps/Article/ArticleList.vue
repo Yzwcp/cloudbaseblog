@@ -1,7 +1,7 @@
 <template>
     <div class="ArticleList">
       <div v-if="initData?.articleList?.length>0">
-        <div v-for="(item,index) in initData.articleList" :key="item.Id">
+        <div v-for="(item,index) in initData.articleList" :key="item.id">
           <ArticleItem   :detail="item"></ArticleItem>
         </div>
       </div>
