@@ -26,9 +26,7 @@ import ArticleFilter from './childComps/ArticleFilter/ArticleFilter.vue'
 import {defineComponent, reactive, toRefs,getCurrentInstance,provide,ref} from 'vue'
 import { UploadOutlined } from '@ant-design/icons-vue';
 import {useRouter} from 'vue-router'
-// import {HOME_LIMIT} from '@/util/mysql.js'
-
-const HOME_LIMIT =10
+import {HOME_LIMIT} from '@/util/config.js'
 export default defineComponent({
   name: 'Home',
   props: {
@@ -52,17 +50,20 @@ export default defineComponent({
     /**
      * 查询条件
      */
-    const condition = reactive({
+    let condition = reactive({
       orderBy:'id,DESC',
-      where:{},
     })
     /**
      *清除查询条件
      */
     const clearCondition  = () => {
       page.current = 1
-      page.limit = `1,${HOME_LIMIT}`
-      page.where = ''
+      // page.limit = `1,${HOME_LIMIT}`
+      // page.where = ''
+      page.pageSize = HOME_LIMIT
+      condition = {
+        orderBy:'id,DESC',
+      }
     }
     const initData = reactive({
       articleList:[],
@@ -94,8 +95,8 @@ export default defineComponent({
     const getClassify  = async () => {
       const {result=[],success,total=0} = await proxy.$api.getQueryAPI('categorize')
       if (success){
-        initData.classifyList = [...result]
-        initData.classifyTotal = total
+        initData.classifyList = [...result.rows]
+        initData.classifyTotal =  result.count
       }
     }
     /**
@@ -117,7 +118,7 @@ export default defineComponent({
     const tagsHandle  = async (v) => {
       clearCondition()
       classifyRef.value.selectData = {}//清除分类筛选的样式
-      page.where='tags like '+'"%'+v+'%"'+''
+      condition.tags = v
       getArticle()
     }
     /**
@@ -127,7 +128,7 @@ export default defineComponent({
      */
     const classifyHandle  = async (v) => {
       clearCondition()
-      page.where = v?'categorize like '+'"%'+v+'%"'+'' : null
+      condition.categorize = v
       getArticle()
     }
     //页码修改
@@ -141,7 +142,7 @@ export default defineComponent({
     const initFn  = () => {
       getArticle()
       getTags()
-      // getClassify()
+      getClassify()
     }
     initFn()
 

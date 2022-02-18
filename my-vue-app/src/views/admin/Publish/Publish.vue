@@ -158,7 +158,7 @@
       let initValue = route.params.text || ""
       if (initValue){
         initValue=JSON.parse(initValue)
-        initValue.tags = initValue.tags.split(',')
+        initValue.tags = initValue?.tags?.split(',')
       }
       const formState = reactive({
         ...initValue,
@@ -170,9 +170,9 @@
        * @returns {Promise<void>}
        */
       const getClassify  = async () => {
-        const {result=[],success} = await proxy.$api.getQueryAPI('atc_classify')
+        const {result=[],success,total=0} = await proxy.$api.getQueryAPI('categorize')
         if (success){
-          initData.classifyList = [...result]
+          initData.classifyList = [...result.rows]
         }
       }
       /**
@@ -180,17 +180,18 @@
        * @returns {Promise<void>}
        */
       const getTags  = async () => {
-        const {result=[],success} = await proxy.$api.getQueryAPI('atc_tags')
+        const {result=[],success} = await proxy.$api.getQueryAPI('tags')
         if (success){
-          initData.tagsList = [...result]
+          initData.tagsList = [...result.rows]
+
         }
       }
       /**
        *添加tags
        * */
-      const saveTags = async (v) => {
+      const saveTags = async (value) => {
         initData.loading = true
-        const { result , success ,message } = await proxy.$api.saveTags(v)
+        const { result , success ,message } = await proxy.$api.saveAPI('tags',{value})
         initData.loading = false
         if(success){
           getTags()
@@ -219,15 +220,16 @@
       }
       const tagsChange = (v,o)=>{
         console.log(v);
+        formState.tags = v
       }
       const send =async value=>{
         vditorRef.value.getValue()//获取markdown数据
         body.value = vditorRef.value.body//拿出获取markdown数据来
         value.tags = value.tags.join(',')
-        value.auth = 'yuanzhiwen'
+        value.auth = '2'
         if(initValue){
-          const { result , success ,message } =  await proxy.$api.editArticle({
-            Id:initValue.Id,
+          const { result , success ,message } =  await proxy.$api.modifyAPI('article',{
+            id:initValue.id,
             body:body.value,
             ...value
           })
@@ -236,7 +238,7 @@
           }
           return
         }
-        const { result , success ,message } = await proxy.$api.saveArticle({
+        const { result , success ,message } = await proxy.$api.saveAPI('article',{
           body:body.value,
           likeList:'',
           ...toRaw(value)

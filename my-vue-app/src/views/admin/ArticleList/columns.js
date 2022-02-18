@@ -21,8 +21,8 @@ export  const columns = [
     },
     {
         title: '是否可见',
-        key: 'show',
-        dataIndex: 'show',
+        key: 'private',
+        dataIndex: 'private',
     },{
         title: '创建时间',
         key: 'createdAt',
@@ -33,10 +33,6 @@ export  const columns = [
         dataIndex: 'updatedAt',
     },
     {
-        title: '权限',
-        key: 'auth',
-        dataIndex: 'auth',
-    },{
         title: '喜欢',
         key: 'like',
         dataIndex: 'like',

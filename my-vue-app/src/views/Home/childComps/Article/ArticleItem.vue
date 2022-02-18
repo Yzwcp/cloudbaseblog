@@ -26,7 +26,7 @@
 
             </ul>
             <div id="containercontent">
-              {{detail.updatedAt}}
+              {{detail.myDescribe}}
             </div>
           </div>
 <!--          <div class="pub-article-cover" >-->

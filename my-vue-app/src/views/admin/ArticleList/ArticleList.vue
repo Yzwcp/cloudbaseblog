@@ -4,7 +4,14 @@
         <a-button class="editable-add-btn" style="margin-bottom: 8px" @click="handleAdd">Add</a-button>
         <a-table rowKey="id" bordered :data-source="articleList" :columns="columns"  :pagination='page' @change='changeCurrent' :loading="loading">
 					<template #operation="{ record }">
-						<a @click="handEdit(record)">编辑</a>
+            <a-button type="primary" @click="handEdit(record)">编辑</a-button>
+            <a-popconfirm placement="topRight" ok-text="Yes" cancel-text="No" @confirm="confirm">
+              <template #title>
+                <p>{{ text }}</p>
+                <p>{{ text }}</p>
+              </template>
+              <a-button type="danger" @click="handDelete(record)">删除</a-button>
+            </a-popconfirm>
         	</template>
         </a-table>
 

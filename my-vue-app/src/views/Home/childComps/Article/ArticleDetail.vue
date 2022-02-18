@@ -29,7 +29,7 @@
               </ul>
               <div id="preview"> </div>
           </div>
-          <ArticleComment :articleId='detail.Id' :comment='comment'/>
+          <ArticleComment :articleId='detail.id' :comment='comment'/>
         </a-col>
 <!--        <a-col :span="4"><div><div id="outline"></div></div></a-col>-->
       </a-row>
@@ -51,13 +51,14 @@
       const {proxy} = getCurrentInstance()
       const initData = reactive({
         detail:{},
-				comment:[]
+				comment:[],
+        commentTotal:0
       })
       let detailId = route.query.id
       const getArticleDatail  = async () => {
-        const { result , success ,message } = await proxy.$api.getQueryAPI('article',"Id=" + detailId)
+        const { result , success ,message } = await proxy.$api.detailAPI('article',{id:detailId})
         if(success){
-          initData.detail = result[0]
+          initData.detail = result
         }
       }
 
@@ -132,42 +133,28 @@
 				发送评论
 			 */
 			const sendComment = async (params) => {
-				let heroInfo = localStorage.getItem('heroInfo')
-				if(heroInfo==null){
-					const {sanGuo} = config
-					const list1 = ['曹魏','蜀汉','孙吴']
-					const list2 = ['文臣','武将']
-					const t = Object.keys(sanGuo).length -1
-					const campRandom = Math.round(Math.random()*t) // 阵营 随机数
-					const camp = list1[campRandom]//阵营
-					const wenAndwuRandom = Math.round(Math.random()*1) // 文 or 武 随机数
-					const wenAndwu = list2[wenAndwuRandom] //文武q+
-					const list3 = sanGuo[camp][wenAndwu] //随机出来的英雄列表
-					const t3 = Math.round(Math.random()*(list3.length-1))//随机一个英雄
-					const hero = list3[t3]
-					heroInfo = [camp,wenAndwu,hero]
-					localStorage.setItem('heroInfo',[camp,wenAndwu,hero])
-				}
-				const { result , success ,message } = await proxy.$api.saveComment({...params,likeList:'',heroInfo:heroInfo})
+        const { result , success ,message } = await proxy.$api.saveAPI('comment',{...params})
         if(success){
+          proxy.$message.success({content:"发送成功"})
           initComent()
         }
-			}
+      }
 			/**
 				初始化评论
 			 */
 			const initComent = async ()=>{
-				const { result , success ,message } = await proxy.$api.getQueryAPI('atc_comment','articleId='+detailId)
+				const { result , success ,message } = await proxy.$api.getQueryAPI('comment',{articleId:detailId})
         if(success){
-          initData.comment = result
+          initData.comment = result.rows
+          initData.commentTotal = result.count
         }
 			}
 			/**
 				评论喜欢
 			 */
 			const handleCommentLike =async (item)=>{
-				if(item.likeList.includes(agentMd5))return 	proxy.$message.error({content:'你已经点过赞了'})
-        const { result , success ,message } = await proxy.$api.saveCommonLikeAPI('atc_comment','Id='+item.Id,agentMd5 )
+				if(item.likeList && item.likeList.includes(agentMd5))return 	proxy.$message.error({content:'你已经点过赞了'})
+        const { result , success ,message } = await proxy.$api.commonSaveAPI('/like',{type:2,commentId:item.id,agentMd5} )
 			  if(success){
           proxy.$message.success({content:'点赞成功！'})
           initComent()
@@ -178,7 +165,7 @@
        */
       const handleAricleLike =async (item)=>{
         if(item.likeList.includes(agentMd5))return 	proxy.$message.error({content:'你已经点过赞了'})
-        const { result , success ,message } = await proxy.$api.saveCommonLikeAPI('article','Id='+item.Id,agentMd5 )
+        const { result , success ,message } = await proxy.$api.commonSaveAPI('/like',{type:1,articleId:item.id,agentMd5} )
         if(success){
           proxy.$message.success({content:'点赞成功！'})
           getArticleDatail()
