@@ -73,7 +73,7 @@
         .statistical{
             display: grid;
             grid-template-row: 100px 100px;
-            grid-template-columns: repeat(3,100px);
+            grid-template-columns: 1fr 1fr 1fr;
             text-align: center;
         }
         .notice{

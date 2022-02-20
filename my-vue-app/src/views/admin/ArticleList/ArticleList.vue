@@ -5,12 +5,11 @@
         <a-table rowKey="id" bordered :data-source="articleList" :columns="columns"  :pagination='page' @change='changeCurrent' :loading="loading">
 					<template #operation="{ record }">
             <a-button type="primary" @click="handEdit(record)">编辑</a-button>
-            <a-popconfirm placement="topRight" ok-text="Yes" cancel-text="No" @confirm="confirm">
+            <a-popconfirm placement="topRight" ok-text="Yes" cancel-text="No" @confirm="handDelete(record)">
               <template #title>
-                <p>{{ text }}</p>
-                <p>{{ text }}</p>
+                <p>确定删除该文章么？</p>
               </template>
-              <a-button type="danger" @click="handDelete(record)">删除</a-button>
+              <a-button type="danger" >删除</a-button>
             </a-popconfirm>
         	</template>
         </a-table>
@@ -66,13 +65,14 @@ export default defineComponent({
       const { result , success ,message ,total} = await proxy.$api.getQueryAPI('article',{
         ...page
       })
+      console.log(proxy.$api);
       if(success){
         initData.articleList = [...result.rows]
         page.total = result.count
         initData.articleTotal = result.count
       }
     }
-    const handEdit = (text)=>{
+    const handEdit = (text)=>{ 
         router.push({
             //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
             name: 'adminPublish',
@@ -80,6 +80,15 @@ export default defineComponent({
                 text:JSON.stringify(text)
             }
         });
+    }
+    const handDelete =async (record)=>{
+      const reslut =  await proxy.$api.removeAPI('article',{id:record.id})
+      console.log(reslut);
+      if(reslut.success){
+        getArticle()
+         proxy.$message.success({content:reslut.message})
+      }
+
     }
     const changeCurrent = (value) =>{
       let v = value.current
@@ -96,7 +105,8 @@ export default defineComponent({
       dayjs,
       changeCurrent,
       handEdit,
-      loading
+      loading,
+      handDelete
     }
   },
   methods:{

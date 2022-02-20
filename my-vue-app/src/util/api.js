@@ -43,6 +43,9 @@ export const API = {
   modifyAPI:(clazz,value)=>{
     return request({url:clazz+'/modify',method:'post',data:{...value}})
   },
+  removeAPI:(clazz,value)=>{
+    return request({url:clazz+'/remove',method:'post',data:{...value}})
+  },
   detailAPI:(clazz,value)=>{
     return request({url:clazz+'/detail',method:'post',data:{...value}})
   },
