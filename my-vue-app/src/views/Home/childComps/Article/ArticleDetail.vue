@@ -2,8 +2,11 @@
     <div class="ArticleDetail">
         <!-- <div id="outline"></div> -->
       <a-row type="flex" justify="center" >
-        <a-col :span="12">
-          <div class="ArticleDetail-container">
+        <a-col :span="10">
+          <div class="ArticleDetail-container" v-show="Object.keys(detail).length==0">
+            请输入密码访问 <a-input type="password" v-model:value="password" @keyup.enter="getArticleDatail" />
+          </div>
+          <div class="ArticleDetail-container" v-show="Object.keys(detail).length>0">
               <div class="container-title">{{detail.title}}</div>
               <ul  class="container-msg">
                   <div class="pub-article-extra">
@@ -19,7 +22,7 @@
                   <div class="pub-article-extra">
                     <FieldTimeOutlined/>
                     <span>创建时间:</span>
-                    <div>{{((new Date(detail.createTime)).toLocaleString())}}</div>
+                    <div>{{((new Date(detail.createdAt)).toLocaleString())}}</div>
                   </div>
                   <div class="pub-article-extra" @click="handleAricleLike(detail)">
                     <like-outlined :style='{"color":detail?.likeList?.indexOf(agentMd5)>-1?"red":""}'/>
@@ -31,8 +34,9 @@
           </div>
           <ArticleComment :articleId='detail.id' :comment='comment'/>
         </a-col>
-<!--        <a-col :span="4"><div><div id="outline"></div></div></a-col>-->
       </a-row>
+      <div><div id="outline"></div></div>
+
     </div>
 </template>
 
@@ -54,20 +58,28 @@
 				comment:[],
         commentTotal:0
       })
+      const password =  ref(null)
       let detailId = route.query.id
+      let isPassword = route.query.body
       const getArticleDatail  = async () => {
-        const { result , success ,message } = await proxy.$api.detailAPI('article',{id:detailId})
+        let params = {id:detailId}
+        if(password){
+          params.password = password.value
+        }
+        const { result , success ,message } = await proxy.$api.detailAPI('article',params)
         if(success){
           initData.detail = result
         }
+        initComent()
+        getBody()
       }
 
       onMounted(()=>{
         getBody()
       })
       const getBody  = () => {
-        let id = document.getElementById('preview')
         setTimeout(()=>{
+          let id = document.querySelector('#preview')
           Vditor.preview(id,initData.detail.body,{
             hljs:{
               style:'dracula',
@@ -78,7 +90,6 @@
               randerOverView()
             },
           })
-
         },500)
       }
       const randerOverView = ()=>{
@@ -172,8 +183,10 @@
         }
       }
       const initFn  = () => {
-        getArticleDatail()
-        initComent()
+        if(isPassword == 0){
+          getArticleDatail()
+        }
+
       }
       initFn()
 			provide('sendComment',sendComment)
@@ -182,6 +195,8 @@
         ...toRefs(initData),
         handleAricleLike,
         agentMd5,//相当于user 浏览器+id de md5
+        password,
+        getArticleDatail
       }
 
     },
@@ -201,12 +216,11 @@
       /*grid-template-columns: 3fr  1fr;*/
     }
     #outline{
-        width: 300px;
         display: none;
-        position: sticky;
-        right:300px;
+        position: fixed;
+        right:250px;
         position: -webkit-sticky;
-        top: 0px;
+        top: 120px;
         display: grid;
         grid-template-columns: 2fr 1fr;
         grid-template-row: repeat(2 , 1fr);

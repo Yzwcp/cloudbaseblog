@@ -36,14 +36,14 @@ instance.interceptors.response.use(
   },
   error => {
       //响应错误处理
-      console.log(JSON.parse(JSON.stringify(error.response)));
+      console.log(JSON.parse(JSON.stringify(error)).message)
       let response = JSON.parse(JSON.stringify(error.response))
       if(Object.keys(response).length>0){
         if(response.data.message.indexOf('token')>-1){
           localStorage.removeItem('UMEP_BLOG')
           window.location.reload()
         }
-        
+
       }
       // if(!error.status){
       //   notification.error({description:err.message,message:err.name})

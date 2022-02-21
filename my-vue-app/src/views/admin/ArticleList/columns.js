@@ -23,7 +23,18 @@ export  const columns = [
         title: '是否可见',
         key: 'private',
         dataIndex: 'private',
-    },{
+    },
+    {
+        title: '喜欢',
+        key: 'like',
+        dataIndex: 'like',
+    },
+    {
+        title: '密码',
+        key: 'password',
+        dataIndex: 'password',
+    },
+    {
         title: '创建时间',
         key: 'createdAt',
         dataIndex: 'createdAt',
@@ -31,11 +42,6 @@ export  const columns = [
         title: '更新时间',
         key: 'updatedAt',
         dataIndex: 'updatedAt',
-    },
-    {
-        title: '喜欢',
-        key: 'like',
-        dataIndex: 'like',
     },
     {
         title: 'operation',

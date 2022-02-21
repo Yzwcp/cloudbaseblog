@@ -1,6 +1,7 @@
+const env = import.meta.env
 export default {
-	api_base_url : 'http://localhost:3000/',
-	// api_base_url : 'httpz://hello-cloudbase-0g324hb6bc21523c-1307223249.ap-shanghai.app.tcloudbase.com',
+	api_base_url :'http://139.196.155.67:3030/',
+  // api_base_url : 'httpz://hello-cloudbase-0g324hb6bc21523c-1307223249.ap-shanghai.app.tcloudbase.com',
   ErrorMesage:{
     400:'网络请求失败！'
   },

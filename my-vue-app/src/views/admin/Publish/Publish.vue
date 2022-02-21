@@ -14,7 +14,7 @@
           style="width:100%"
         >
           <a-col :md="{span:3}">
-            <a-form-item name="categorize" label="分类" :rules="[{ required: true, message: 'Please input your categorize!' }]">
+            <a-form-item name="categorize" label="分类" :rules="[{ required: true, message: '填写分类' }]">
               <a-select
                 ref="select"
                 v-model:value="formState.categorize"
@@ -27,11 +27,11 @@
           </a-col>
           <a-col :span='4'>
 
-            <a-form-item name="tags" label="标签" :rules="[{ required: true, message: 'Please input your tags!' }]">
+            <a-form-item name="tags" label="标签" :rules="[{ required: true, message: '填写tags' }]">
               <a-select
                 :options="tagsList"
                 mode="multiple"
-                placeholder="Please select"
+                placeholder="选择或添加标签"
                 style="width: 200px"
                 v-model:value="formState.tags"
                 @change='tagsChange'
@@ -55,54 +55,57 @@
           </a-col>
           <a-col :span='4'>
             <a-form-item name="title" label="标题" :rules="[{ required: true, message: '添加标题' }]">
-              <a-input style="width: 200px" v-model:value="formState.title" placeholder="Basic usage" />
+              <a-input style="width: 200px" v-model:value="formState.title" placeholder="标题" />
             </a-form-item>
           </a-col>
           <a-col :span='4'>
             <a-form-item name="myDescribe" label="描述" :rules="[{ required: true, message: '添加描述' }]">
-              <a-input  v-model:value="formState.myDescribe" placeholder="Basic myDescribe" />
+              <a-input  v-model:value="formState.myDescribe" placeholder="描述" />
             </a-form-item>
           </a-col>
-          <a-col :span='2'>
-            <a-select
-                ref="select"
-                v-model:value="path.value"
-                style="width: 140px"
-                placeholder="请选择上传路径"
-            >
-              <a-select-option v-for="(item,index) in path.pathList" :value="item.value" :key="item.value">{{item.label}}</a-select-option>
-            </a-select>
-          </a-col>
-          <a-col :span='2'>
-            <a-upload  :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"  >
-              <a-button >
-                <upload-outlined></upload-outlined>
-                选择封面
-              </a-button>
-            </a-upload>
-            <a-button
-                type="primary"
-                :disabled="fileList.length === 0"
-                style="margin-top: 16px"
-                @click="handleUpload"
-            >
-              {{ uploading ? '上传中' : '上传' }}
-            </a-button>
-            <a-upload
-              name="file"
-              :multiple="true"
-              action="http://localhost:3000/upload"
-              @change="handleChange"
-            >
-              <a-button> <a-icon type="upload" /> Click to Upload </a-button>
-            </a-upload>
+<!--          <a-col :span='2'>-->
+<!--            <a-select-->
+<!--                ref="select"-->
+<!--                v-model:value="path.value"-->
+<!--                style="width: 140px"-->
+<!--                placeholder="请选择上传路径"-->
+<!--            >-->
+<!--              <a-select-option v-for="(item,index) in path.pathList" :value="item.value" :key="item.value">{{item.label}}</a-select-option>-->
+<!--            </a-select>-->
+<!--          </a-col>-->
+<!--          <a-col :span='2'>-->
+<!--            <a-upload  :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"  >-->
+<!--              <a-button >-->
+<!--                <upload-outlined></upload-outlined>-->
+<!--                选择封面-->
+<!--              </a-button>-->
+<!--            </a-upload>-->
+<!--            <a-button-->
+<!--                type="primary"-->
+<!--                :disabled="fileList.length === 0"-->
+<!--                style="margin-top: 16px"-->
+<!--                @click="handleUpload"-->
+<!--            >-->
+<!--              {{ uploading ? '上传中' : '上传' }}-->
+<!--            </a-button>-->
+<!--            <a-upload-->
+<!--              name="file"-->
+<!--              :multiple="true"-->
+<!--              action="http://localhost:3000/upload"-->
+<!--              @change="handleChange"-->
+<!--            >-->
+<!--              <a-button> <a-icon type="upload" /> Click to Upload </a-button>-->
+<!--            </a-upload>-->
+<!--          </a-col>-->
+          <a-col :span='3'>
+            <a-form-item label="访问密码" name="password" >
+              <a-input v-model:value="formState.password" placeholder="选填" style="width:100px"/>
+            </a-form-item>
           </a-col>
           <a-col :span='2' v-if="fileList.length > 0 && formState.cover">
             <a-form-item name="cover">
-              <img id="copyimg" :src="formState.cover" @click="copyImgSrc" style="height: 50px;width: 100px" alt="">
             </a-form-item>
           </a-col>
-
           <a-col :span='2'>
             <a-form-item >
                 <a-button  type="primary" html-type="submit">Submit</a-button>
@@ -248,7 +251,7 @@
         }
         router.push({
           path:'/detail',
-          query:{id:result.insertId}
+          query:{id:result.id,body:result.password?1:0}
         })
 
       }

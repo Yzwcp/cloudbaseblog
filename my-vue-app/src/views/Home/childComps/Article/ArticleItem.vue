@@ -1,5 +1,5 @@
 <template>
-    <div class="ArticleItem" @click="goDetail(detail.id)">
+    <div class="ArticleItem" @click="goDetail(detail)">
         <div class="ArticleItem-container">
           <div class="circle">
             <span></span>
@@ -51,7 +51,8 @@ export default defineComponent({
           //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
           name: 'ArticleDetail',
           query: {
-            id:value
+            id:value.id,
+            body:value.body==='need password'? 1:0
           }
         });
       }

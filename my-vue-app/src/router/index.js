@@ -20,14 +20,14 @@ const routes = [
     path: '/index',
     name: 'Home',
     component: Home,
-    meta:{admin:false,title:'首页',route:'/index',keepAlive:false},
+    meta:{admin:false,title:'首页',route:'/index',keepAlive:true},
     props:true
   },
   {
     path: '/detail',
     name: 'ArticleDetail',
     component: ArticleDetail,
-    meta:{admin:false,title:'文章详情',route:'/detail'},
+    meta:{admin:false,title:'文章详情',route:'/detail',},
   },
 
   {

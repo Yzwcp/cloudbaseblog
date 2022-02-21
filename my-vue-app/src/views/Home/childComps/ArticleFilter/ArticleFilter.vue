@@ -5,7 +5,7 @@
     <span style="marginLeft:20px">/{{selectData.value}}</span>
   </div>
   <div>
-    <li @click="filterAticle(null)">显示全部文章</li>
+    <li @click="filterAticle(null)">全部文章</li>
     <li v-for="item in initData.classifyList"   :class="item.id==selectData.id?'active':''"  :key="item.Id" @click="filterAticle(item)">{{ item.value }}</li>
   </div>
 
@@ -19,7 +19,7 @@ import {FolderOpenOutlined} from '@ant-design/icons-vue';
 export default defineComponent({
   name: 'ArticleFilter',
   props: {
-    
+
   },
   data(){
     return{
