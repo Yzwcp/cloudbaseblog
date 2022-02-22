@@ -8,7 +8,6 @@ import 'ant-design-vue/dist/antd.less';
 import {API,} from '@/util/api.js'
 import store from './store'
 
-
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('UMEP_BLOG')
   console.log(token)
