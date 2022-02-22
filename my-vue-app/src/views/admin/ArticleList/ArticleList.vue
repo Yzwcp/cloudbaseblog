@@ -12,6 +12,12 @@
               <a-button type="danger" >删除</a-button>
             </a-popconfirm>
         	</template>
+          <template #private="{ text,record }">
+            <a-switch checked-children="隐藏" un-checked-children="显示" :checked="record.private"   @change="privateChange(record)" />
+          </template>
+          <template #id="{ text,record }">
+            <a @click="goDetail(record)">{{text}}</a>
+          </template>
         </a-table>
 
     </div>
@@ -62,7 +68,7 @@ export default defineComponent({
       where:{},
     })
     const getArticle  = async () => {
-      const { result , success ,message ,total} = await proxy.$api.getQueryAPI('article',{
+      const { result , success ,message ,total} = await proxy.$api.getQueryAPI('/article/admin',{
         ...page
       })
       console.log(proxy.$api);
@@ -72,7 +78,7 @@ export default defineComponent({
         initData.articleTotal = result.count
       }
     }
-    const handEdit = (text)=>{ 
+    const handEdit = (text)=>{
         router.push({
             //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
             name: 'adminPublish',
@@ -94,8 +100,26 @@ export default defineComponent({
       let v = value.current
       page.current = v
       // page.limit  = (v-1)*page.pageSize+','+page.pageSize
-      console.log(page.limit)
       getArticle()
+    }
+    const privateChange = async(value)=>{
+      let v = value
+      if(v.password)delete v.password
+      const {success,message}  = await proxy.$api.modifyAPI('/article',{...v,private:!v.private})
+      if(success){
+        proxy.$message.success({content:message})
+        getArticle()
+      }
+    }
+    const goDetail = (value)=>{
+      router.push({
+        //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+        name: 'ArticleDetail',
+        query: {
+          id:value.id,
+          body:value.password? 1:0
+        }
+      });
     }
     getArticle()
     return{
@@ -106,7 +130,9 @@ export default defineComponent({
       changeCurrent,
       handEdit,
       loading,
-      handDelete
+      privateChange,
+      handDelete,
+      goDetail
     }
   },
   methods:{

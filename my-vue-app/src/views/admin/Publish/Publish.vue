@@ -165,6 +165,7 @@
       }
       const formState = reactive({
         ...initValue,
+        password:''
       });
       if(initValue) body.value=initValue.body
 

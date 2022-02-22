@@ -11,10 +11,10 @@
         >
             <a-form-item
                     label="Username"
-                    name="username"
-                    :rules="[{ required: true, message: 'Please input your username!' }]"
+                    name="email"
+                    :rules="[{ required: true, message: 'Please input your email!' }]"
             >
-                <a-input v-model:value="formState.username" />
+                <a-input v-model:value="formState.email" />
             </a-form-item>
 
             <a-form-item
@@ -48,7 +48,7 @@
             const router = useRouter()
             const store = useStore()
             const formState = reactive({
-                username: '',
+                email: '',
                 password: '',
                 remember: true,
             });
@@ -62,10 +62,9 @@
             //   }
             // };
             const onFinish =async (values) => {
-                const data =   await proxy.$api.login({...values})
-                console.log(data)
-                if(data.success){
-                    localStorage.setItem('UMEP_BLOG',data.token)
+                const {result,message,success} =   await proxy.$api.login({...values})
+                if(success){
+                    localStorage.setItem('UMEP_BLOG',message)
                     router.push({path:'admin'})
                     proxy.$message.success('登录成功')
                 }
