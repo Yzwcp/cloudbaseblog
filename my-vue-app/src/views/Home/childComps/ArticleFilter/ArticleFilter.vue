@@ -44,7 +44,9 @@ export default defineComponent({
     border-bottom: 1px solid #f0f0f0;
     padding-left: 10px;
     line-height: 40px;
-    cursor:pointer
+    cursor:pointer;
+    list-style: none;
+
   }
   li:hover{
     background: #f8f8f8;

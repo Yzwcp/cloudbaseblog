@@ -2,12 +2,25 @@ import axios from 'axios'
 import config from "./config";
 import {notification} from 'ant-design-vue';
 import {useStore} from 'vuex'
-import {useRouter,useRoute} from 'vue-router'
+import router from "@/router";
 import {message} from 'ant-design-vue';
 
 const  { api_base_url ,ErrorMesage,Authentication} = config
 import {API} from '@/util/api.js'
 // axios.defaults.withCredentials =true
+const error = (error) => {
+  //
+  let response = JSON.parse(JSON.stringify(error.response))
+  if(response){
+    if(response.status===401){
+      message.error(response.data)
+      router.push('/login')
+    }
+  }
+  // if(!error.status){
+  //   notification.error({description:err.message,message:err.name})
+  // }
+}
 export function request (config){
  return new Promise((resolve, reject)=>{
     const instance = axios.create({
@@ -34,25 +47,7 @@ instance.interceptors.response.use(
     }
     if(response.status==200) return response
   },
-  error => {
-      //
-      let response = JSON.parse(JSON.stringify(error.response))
-
-      if(response){
-        if(response.status===401){
-          message.error(response.data)
-        }
-      }
-      if(Object.keys(response).length>0){
-        if(response.data.message.indexOf('token')>-1){
-          localStorage.removeItem('UMEP_BLOG')
-          window.location.reload()
-        }
-      }
-      // if(!error.status){
-      //   notification.error({description:err.message,message:err.name})
-      // }
-  })
+  error )
   instance(config)
       .then(res => {
           resolve(res?.data || {})
