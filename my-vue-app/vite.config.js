@@ -25,6 +25,20 @@ export default defineConfig({
       "dirs": path.resolve(__dirname, "src/directives"),
     },
   },
+  devServer: {
+    port: 7070,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3030',
+        changeOrigin: true,
+        ws: true,  // 这一行很关键  表示是否开启  websocket
+        secure: true,
+        pathRewrite: {
+          '^/api': '/',
+        },
+      },
+    },
+  },
   plugins: [vue()],
 
 })

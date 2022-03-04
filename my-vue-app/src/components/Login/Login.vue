@@ -15,13 +15,12 @@
                 </div>
             </div>
             <a-form
+              ref="formRef"
               :model="formState"
               name="basic"
               :label-col="{ span: 6 }"
               :wrapper-col="{ span: 10 }"
               autocomplete="off"
-              @finish="onFinish"
-              @finishFailed="onFinishFailed"
               class="form"
             >
                 <a-form-item
@@ -54,7 +53,7 @@
 </template>
 
 <script>
-import {defineComponent, getCurrentInstance, reactive, toRefs,ref} from 'vue'
+import {defineComponent, getCurrentInstance, reactive, toRefs,ref,toRaw} from 'vue'
 import {useRouter} from 'vue-router'
 import {useStore} from 'vuex'
 import { RightCircleOutlined,LeftCircleOutlined } from '@ant-design/icons-vue';
@@ -66,19 +65,22 @@ export default defineComponent({
         const router = useRouter()
         const store = useStore()
         const isLogin = ref(false)
+        const formRef = ref()
         const formState = reactive({
             email: '',
             password: '',
-            remember: true,
         });
         // console.log(proxy.$api.auth.getAuthHeader());
         const onRegister =async (values) => {
-          const data =   await proxy.$api.register({...values})
-          console.log(data)
-          if(data.success){
-            localStorage.setItem('UMEP_BLOG',data.token)
-            proxy.$message.success('注册成功')
-          }
+          formRef.value.validate()
+            .then(async()=>{
+              const data =   await proxy.$api.register({...toRaw(formState)})
+              if(data.success){
+                localStorage.setItem('UMEP_BLOG',data.token)
+                proxy.$message.success('注册成功')
+              }
+            })
+
         };
         const change = (v)=>{
             isLogin.value =!isLogin.value
@@ -104,12 +106,16 @@ export default defineComponent({
 
         }
         const onFinish =async (values) => {
-            const {result,message,success} =   await proxy.$api.login({...values})
-            if(success){
+          formRef.value.validate()
+            .then(async()=>{
+              const {result,message,success} =   await proxy.$api.login({...toRaw(formState)})
+              if(success){
                 localStorage.setItem('UMEP_BLOG',message)
                 router.push({path:'admin'})
                 proxy.$message.success('登录成功')
-            }
+              }
+            })
+
         };
         const onFinishFailed = (errorInfo) => {
             console.log('Failed:', errorInfo);
@@ -138,7 +144,7 @@ export default defineComponent({
             onFinish,
             onFinishFailed,
             beforeEnter,
-            enter,isLogin,
+            enter,isLogin,formRef,
             afterEnter,change,onRegister
         };
     },
@@ -194,6 +200,8 @@ export default defineComponent({
                 position: absolute;
                 left: 200px;
                 width: 400px;
+                top: 50%;
+                transform: translateY(-50%);
             }
             .loginBlock{
                 border-top-left-radius: 20px;

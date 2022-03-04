@@ -5,7 +5,7 @@
 </template>
 
           <script>
-import {defineComponent, reactive, toRefs} from 'vue'
+import {defineComponent, reactive, toRefs,} from 'vue'
 import Layout from '@/components/Layout.vue'
 export default defineComponent({
   name: '',
