@@ -45,7 +45,7 @@
             upload: {
               // accept: 'image/*,.mp3, .wav, .rar',
               // token: 'test',
-              url: 'http://localhost:3000/common/upload',
+              url: 'http://localhost:3030/common/upload',
               // linkToImgUrl: '/api/upload/fetch',
               // filename (name) {
               //   return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').

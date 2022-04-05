@@ -1,4 +1,4 @@
-export const tools = {
+export  const tools = {
    get16Color(){
     var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
     var colorArray = colorElements.split(",");
@@ -11,5 +11,19 @@ export const tools = {
   fontSize(){
     let size = Math.floor(Math.random()*8)+20
     return size + "px"
-  }
+  },
+  longUrl(item){
+    if(!item) return ''
+    return baseImg + item
+  },
+  shortUrl(list){
+    if(list instanceof Array && list.length>0){
+      let s = ''
+      list.map(item=>{
+        s+=item.shorturl+','
+      })
+      return s
+    }
+    return ''
+  },
 }

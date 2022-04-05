@@ -12,14 +12,14 @@
                         <desktop-outlined />
                         <router-link  to="/admin/article"><span>文章</span></router-link>
                     </a-menu-item>
-<!--                    <a-menu-item key="/admin/Categorize">-->
-<!--                        <desktop-outlined />-->
-<!--                        <router-link  to="/admin/Categorize"><span>分类</span></router-link>-->
-<!--                    </a-menu-item>-->
-                    <!-- <a-menu-item key="/admin/Tags">
+                   <a-menu-item key="/admin/bulkList">
+                       <desktop-outlined />
+                       <router-link  to="/admin/bulkList"><span>小程序拼团</span></router-link>
+                   </a-menu-item>
+                    <a-menu-item key="/admin/bulkOrderList">
                         <desktop-outlined />
-                        <router-link  to="/admin/Tags"><span>标签</span></router-link>
-                    </a-menu-item> -->
+                        <router-link  to="/admin/bulkOrderList"><span>订单</span></router-link>
+                    </a-menu-item>
                 </a-menu>
             </a-layout-sider>
             <a-layout>

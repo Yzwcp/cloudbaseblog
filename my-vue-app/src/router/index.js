@@ -9,7 +9,8 @@ import Login from "@/components/Login/Login.vue";
 import ArticleDetail from '@/views/Home/childComps/Article/ArticleDetail.vue'
 import thirdParty from "@/views/thirdParty/thirdParty.vue";
 import HomeArticleList from "@/views/Home/childComps/Article/ArticleList.vue";
-
+import BulkList from '@/views/admin/BulkList/BulkList.vue'
+import BulkOrderList from '@/views/admin/BulkOrderList/BulkOrderList.vue'
 const routes = [
   {
     path: '/',
@@ -52,11 +53,22 @@ const routes = [
         component: Categorize,
         meta:{admin:true,title:"分类",route:'/admin/Categorize',keepAlive:false},
       },{
-        path: '/admin/Tags',
-        name: 'Tags',
-        component: Tags,
-        meta:{admin:true,title:"标签",route:'/admin/Tags',keepAlive:false},
+        path: '/admin/bulkList',
+        name: 'bulkList',
+        component: BulkList,
+        meta:{admin:true,title:"拼团",route:'/admin/bulkList',keepAlive:false},
+      },{
+        path: '/admin/bulkOrderList',
+        name: 'bulkOrderList',
+        component: BulkOrderList,
+        meta:{admin:true,title:"订单",route:'/admin/bulkOrderList',keepAlive:false},
       }
+      // ,{
+      //   path: '/admin/Tags',
+      //   name: 'Tags',
+      //   component: Tags,
+      //   meta:{admin:true,title:"标签",route:'/admin/Tags',keepAlive:false},
+      // },
     ]
   },
   {
