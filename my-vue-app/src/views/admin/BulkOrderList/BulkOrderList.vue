@@ -160,9 +160,9 @@ export default defineComponent({
       formState.value.image =tools.shortUrl(upfileList.value)
       if(editMode.value=="add"){
         formState.value.id && delete  formState.value.id
-        res =await proxy.$api.saveAPI('/wx/bulk',toRaw(formState.value))
+        res =await proxy.$api.saveAPI('/wx/order',toRaw(formState.value))
       }else{
-        res =await proxy.$api.modifyAPI('/wx/bulk',toRaw(formState.value))
+        res =await proxy.$api.modifyAPI('/wx/order',toRaw(formState.value))
       }
       console.log(res.success);
       if(res.success){
@@ -206,7 +206,7 @@ export default defineComponent({
       where:{},
     })
     const getBulk  = async () => {
-      const { result , success ,message ,total} = await proxy.$api.getQueryAPI('/wx/bulk',{
+      const { result , success ,message ,total} = await proxy.$api.getQueryAPI('/wx/order',{
         ...page
       })
       if(success){
@@ -231,7 +231,7 @@ export default defineComponent({
       })
     }
     const handDelete =async (record)=>{
-      const reslut =  await proxy.$api.removeAPI('/wx/bulk',{id:record.id})
+      const reslut =  await proxy.$api.removeAPI('/wx/order',{id:record.id})
       if(reslut.success){
         getBulk()
         proxy.$message.success({content:reslut.message})
