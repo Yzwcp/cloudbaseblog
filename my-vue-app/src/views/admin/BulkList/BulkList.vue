@@ -164,6 +164,7 @@ export default defineComponent({
       confirmLoading.value = true;
       let res = {}
       formState.value.image =tools.shortUrl(upfileList.value)
+      formState.value.endtime = Number(new Date(formState.value.endtime).getTime())
       if(editMode.value=="add"){
         formState.value.id && delete  formState.value.id
         res =await proxy.$api.saveAPI('/wx/bulk',toRaw(formState.value))
