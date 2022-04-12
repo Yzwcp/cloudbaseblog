@@ -24,7 +24,6 @@
                   show-time
                   type="date"
                   placeholder="日期"
-                  valueFormat="YYYY-MM-DD HH:mm"
                   style="width: 100%"
                   @ok="dateOk"
                 />
@@ -99,6 +98,7 @@ import {defineComponent,nextTick, reactive,toRefs,getCurrentInstance,ref,compute
 import {columns} from "@/views/admin/BulkList/columns";
 // import {TAGSDICT} from '@/util/map.js'
 import dayjs from "dayjs";
+import moment from 'moment';
 import {useRouter} from 'vue-router'
 import {tools} from '@/util/tools';
 export default defineComponent({
@@ -233,7 +233,8 @@ export default defineComponent({
         }
       })
       nextTick(()=>{
-        formState.value = {...toRaw(text)}
+        let a ={...toRaw(text)}
+        formState.value.endtime = dayjs(new Date(Number(a.endtime))).format('YYYY-MM-DD HH:mm:ss')
         upfileList.value.push(...list) 
       })
     }
