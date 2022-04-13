@@ -234,6 +234,7 @@ export default defineComponent({
       })
       nextTick(()=>{
         let a ={...toRaw(text)}
+        formState.value =a
         formState.value.endtime = dayjs(new Date(Number(a.endtime))).format('YYYY-MM-DD HH:mm:ss')
         upfileList.value.push(...list) 
       })
