@@ -24,7 +24,6 @@
                   show-time
                   type="date"
                   placeholder="日期"
-                  valueFormat="YYYY-MM-DD HH:mm"
                   style="width: 100%"
                   @ok="dateOk"
                 />
@@ -99,6 +98,7 @@ import {defineComponent,nextTick, reactive,toRefs,getCurrentInstance,ref,compute
 import {columns} from "@/views/admin/BulkList/columns";
 // import {TAGSDICT} from '@/util/map.js'
 import dayjs from "dayjs";
+import moment from 'moment';
 import {useRouter} from 'vue-router'
 import {tools} from '@/util/tools';
 export default defineComponent({
@@ -164,6 +164,7 @@ export default defineComponent({
       confirmLoading.value = true;
       let res = {}
       formState.value.image =tools.shortUrl(upfileList.value)
+      formState.value.endtime = Number(new Date(formState.value.endtime).getTime())
       if(editMode.value=="add"){
         formState.value.id && delete  formState.value.id
         res =await proxy.$api.saveAPI('/wx/bulk',toRaw(formState.value))
@@ -232,7 +233,9 @@ export default defineComponent({
         }
       })
       nextTick(()=>{
-        formState.value = {...toRaw(text)}
+        let a ={...toRaw(text)}
+        formState.value =a
+        formState.value.endtime = dayjs(new Date(Number(a.endtime))).format('YYYY-MM-DD HH:mm:ss')
         upfileList.value.push(...list) 
       })
     }
