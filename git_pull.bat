@@ -1,4 +1,4 @@
 @echo off
-echo "========获得nodekoa=========="
-git pull git@github.com:Yzwcp/blog-koa-mysql.git
+echo "========获得前端=========="
+git pull github.com:Yzwcp/cloudbaseblog.git
 pause
